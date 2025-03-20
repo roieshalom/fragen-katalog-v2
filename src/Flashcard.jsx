@@ -1,7 +1,12 @@
 import React from "react";
 
 export default function Flashcard({ question, answers, correctIndex, selectedAnswer, onSelectAnswer }) {
-  console.log("🟡 Flashcard Props:", { question, answers, correctIndex });
+  console.log("🟡 Flashcard Props:", {
+    question,
+    answers,
+    correctIndex,
+    selectedAnswer
+  });
 
   if (!question || !answers || answers.length === 0) {
     return <p>Loading question...</p>;
