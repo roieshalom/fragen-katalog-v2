@@ -1,7 +1,9 @@
+
 {
   "name": "fragen-katalog",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "homepage": "https://roieshalom.github.io/fragen-katalog/",
   "type": "module",
   "scripts": {
     "dev": "vite",
