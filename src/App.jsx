@@ -55,17 +55,15 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
-<header className="app-header">
-  <div className="header-content">
-    <div className="header-titles">
-      <h1 className="app-title">Fragen-Katalog</h1>
-      <p className="subtitle">Under Construction</p>
-    </div>
-    <a href="#" className="about-link">Über</a>
-  </div>
-</header>
-
-
+      <header className="app-header">
+        <div className="header-content">
+          <div className="header-titles">
+            <h1 className="app-title">Fragen-Katalog</h1>
+            <p className="subtitle">Under Construction</p>
+          </div>
+          <a href="#" className="about-link">Über</a>
+        </div>
+      </header>
 
       <main className="main-content">
         {loading ? (
@@ -79,8 +77,7 @@ export default function App() {
               correctIndex={questions[currentQuestion]?.correct}
               selectedAnswer={selectedAnswer}
               onSelectAnswer={handleSelectAnswer}
-/>
-
+            />
 
             <div className="controls">
               <button onClick={prevQuestion}>Zurück</button>
