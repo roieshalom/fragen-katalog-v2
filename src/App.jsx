@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Flashcard from "./Flashcard";
+import "./style.css"; // Ensure styles apply globally
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
@@ -8,31 +9,22 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Adjust path for GitHub Pages vs. Localhost
-    const basePath = window.location.pathname.includes("fragen-katalog") ? "/fragen-katalog" : "";
+    const basePath = window.location.hostname === "localhost" ? "" : "/fragen-katalog";
     const jsonPath = `${basePath}/data/questions.json`;
-
-    console.log("📂 Fetching questions from:", jsonPath); // Debugging log
 
     fetch(jsonPath)
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         return response.json();
       })
       .then((data) => {
-        console.log("✅ JSON Loaded:", data);
-
-        // Convert JSON structure to match what the Flashcard component expects
         const formattedQuestions = data.map((item) => ({
-          id: item.question_number, // Use correct field for ID
-          question: item.question, // Use "question" as-is
-          answers: item.options, // Use "options" instead of "answers"
-          correct: item.options.indexOf(item.correct_answer), // Find the index of the correct answer
+          id: item.question_number ?? "N/A",
+          question: item.question ?? "No question provided",
+          answers: item.options ?? [],
+          correct: item.options ? item.options.indexOf(item.correct_answer) : -1,
         }));
 
-        console.log("🟢 Converted Questions:", formattedQuestions);
         setQuestions(formattedQuestions);
         setLoading(false);
       })
@@ -61,36 +53,49 @@ export default function App() {
     setCurrentQuestion(Math.floor(Math.random() * questions.length));
   };
 
-  console.log("🔍 Current Question Data:", questions[currentQuestion]); // Debugging log
-
   return (
-    <div className="container">
-      <h1>Fragen-Katalog</h1>
+    <div className="app-wrapper">
+<header className="app-header">
+  <div className="header-content">
+    <div className="header-titles">
+      <h1 className="app-title">Fragen-Katalog</h1>
+      <p className="subtitle">Under Construction</p>
+    </div>
+    <a href="#" className="about-link">Über</a>
+  </div>
+</header>
 
-      {loading ? (
-        <p>Loading questions...</p>
-      ) : questions.length > 0 && questions[currentQuestion] ? (
-        <>
-          <Flashcard 
-            question={questions[currentQuestion]?.question || "No question data"} 
-            answers={questions[currentQuestion]?.answers || []} 
-            correctIndex={questions[currentQuestion]?.correct || 0} 
-            selectedAnswer={selectedAnswer} 
-            onSelectAnswer={handleSelectAnswer} 
-          />
 
-          <div className="controls">
-            <button onClick={prevQuestion}>Previous</button>
-            <button onClick={randomQuestion}>Random</button>
-            <button onClick={nextQuestion}>Next</button>
-          </div>
 
-          <p className="question-number">#{questions[currentQuestion]?.id}</p>
-          <p className="total-questions">Total questions: {questions.length}</p>
-        </>
-      ) : (
-        <p>❌ No questions available.</p>
-      )}
+      <main className="main-content">
+        {loading ? (
+          <p className="loading-text">Loading questions...</p>
+        ) : questions.length > 0 ? (
+          <>
+            <Flashcard
+              id={questions[currentQuestion]?.id}
+              question={questions[currentQuestion]?.question}
+              answers={questions[currentQuestion]?.answers}
+              correctIndex={questions[currentQuestion]?.correct}
+              selectedAnswer={selectedAnswer}
+              onSelectAnswer={handleSelectAnswer}
+/>
+
+
+            <div className="controls">
+              <button onClick={prevQuestion}>Zurück</button>
+              <button onClick={randomQuestion}>Zufällig</button>
+              <button onClick={nextQuestion}>Weiter</button>
+            </div>
+
+            <div className="info-footer">
+              <p className="total-questions">Insgesamt: {questions.length} Fragen</p>
+            </div>
+          </>
+        ) : (
+          <p className="error-text">❌ Keine Fragen verfügbar. Bitte die JSON-Datei prüfen.</p>
+        )}
+      </main>
     </div>
   );
 }
