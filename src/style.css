@@ -165,8 +165,10 @@ body {
 }
 
 .controls button:active {
-  transform: scale(0.98);
+  transform: scale(0.9);
+  background-color: #1976d2 !important; /* force reset to original */
 }
+
 
 /* Info Footer */
 .info-footer {
