@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Confetti from "react-confetti";
 import useWindowSize from "react-use/lib/useWindowSize";
 
-const MAX_STREAK = 1;
+const MAX_STREAK = 17;
 
 export default function StreakProgressBar({ streak, triggerCelebration, onResetStreak }) {
   const percentage = Math.min((streak / MAX_STREAK) * 100, 100);
