@@ -65,7 +65,7 @@ export default function App() {
       <header className="app-header">
         <div className="header-inner">
           <div className="header-titles">
-            <h1 className="app-title">Fragen-Katalog</h1>
+            <h1 className="app-title">Fragen-Katalog (Berlin)</h1>
             <p className="subtitle">Under Construction</p>
           </div>
           <a href="#" className="about-link" onClick={(e) => { e.preventDefault(); setShowAbout(true); }}>About</a>
