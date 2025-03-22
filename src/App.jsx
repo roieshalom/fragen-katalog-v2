@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Flashcard from "./Flashcard";
 import AboutModal from "./AboutModal";
-import "./style.css"; // Ensure styles apply globally
+import StreakProgressBar from "./StreakProgressBar";
+import "./style.css";
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
@@ -9,6 +10,8 @@ export default function App() {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showAbout, setShowAbout] = useState(false);
+  const [correctStreak, setCorrectStreak] = useState(0);
+  const [triggerCelebration, setTriggerCelebration] = useState(false);
 
   useEffect(() => {
     const jsonPath = '/data/questions.json';
@@ -36,7 +39,23 @@ export default function App() {
   }, []);
 
   const handleSelectAnswer = (index) => {
+    const isCorrect = index === questions[currentQuestion]?.correct;
+
     setSelectedAnswer(index);
+
+    if (isCorrect) {
+      const newStreak = correctStreak + 1;
+      setCorrectStreak(newStreak);
+      if (newStreak === 17) {
+        setTriggerCelebration(true);
+        setTimeout(() => {
+          setTriggerCelebration(false);
+          setCorrectStreak(0);
+        }, 3000); // Let confetti play out for 3 seconds
+      }
+    } else {
+      setCorrectStreak(0);
+    }
   };
 
   const nextQuestion = () => {
@@ -77,6 +96,12 @@ export default function App() {
           <p className="loading-text">Loading questions...</p>
         ) : questions.length > 0 ? (
           <>
+            <StreakProgressBar
+              streak={correctStreak}
+              triggerCelebration={triggerCelebration}
+              onResetStreak={() => setCorrectStreak(0)}
+            />
+
             <Flashcard
               id={questions[currentQuestion]?.id}
               question={questions[currentQuestion]?.question}
