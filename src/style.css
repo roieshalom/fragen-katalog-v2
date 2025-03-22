@@ -9,12 +9,24 @@ body {
 
 /* Header */
 .app-header {
-  padding: 12px 16px 6px;
+  padding: 12px 0 6px;
   background: transparent;
   width: 100%;
   box-shadow: none;
   text-align: left;
+  display: flex;
+  justify-content: center; /* centers the inner wrapper */
 }
+
+.header-inner {
+  width: 100%;
+  max-width: 400px; /* match .main-content */
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
 
 .header-content {
   display: flex;

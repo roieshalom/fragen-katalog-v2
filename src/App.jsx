@@ -56,14 +56,15 @@ export default function App() {
   return (
     <div className="app-wrapper">
       <header className="app-header">
-        <div className="header-content">
-          <div className="header-titles">
-            <h1 className="app-title">Fragen-Katalog</h1>
-            <p className="subtitle">Under Construction</p>
-          </div>
-          <a href="#" className="about-link">Über</a>
-        </div>
-      </header>
+  <div className="header-inner">
+    <div className="header-titles">
+      <h1 className="app-title">Fragen-Katalog</h1>
+      <p className="subtitle">Under Construction</p>
+    </div>
+    <a href="#" className="about-link">About</a>
+  </div>
+</header>
+
 
       <main className="main-content">
         {loading ? (
