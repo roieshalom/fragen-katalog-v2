@@ -7,39 +7,43 @@ export default function Flashcard({ question, answers, correctIndex, selectedAns
 
   return (
     <div className="flashcard">
-      <p className="question-text">{question}</p>
+      {/* Group question + answers together at the top */}
+      <div className="question-section">
+        <p className="question-text">{question}</p>
 
-      <div className="answer-list">
-        {answers.map((answer, index) => {
-          const isSelected = selectedAnswer !== null;
-          const isCorrect = index === correctIndex;
-          const isChosen = index === selectedAnswer;
+        <div className="answer-list">
+          {answers.map((answer, index) => {
+            const isSelected = selectedAnswer !== null;
+            const isCorrect = index === correctIndex;
+            const isChosen = index === selectedAnswer;
 
-          let buttonClass = "answer-button";
-          if (isSelected) {
-            if (isCorrect) {
-              buttonClass += " correct";
-            } else if (isChosen) {
-              buttonClass += " wrong";
+            let buttonClass = "answer-button";
+            if (isSelected) {
+              if (isCorrect) {
+                buttonClass += " correct";
+              } else if (isChosen) {
+                buttonClass += " wrong";
+              }
             }
-          }
 
-          return (
-            <button
-              key={index}
-              className={buttonClass}
-              onClick={(e) => {
-                e.preventDefault();
-                onSelectAnswer(index);
-              }}
-              disabled={isSelected}
-            >
-              {answer}
-            </button>
-          );
-        })}
+            return (
+              <button
+                key={index}
+                className={buttonClass}
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSelectAnswer(index);
+                }}
+                disabled={isSelected}
+              >
+                {answer}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
+      {/* Always pinned to bottom right */}
       <div className="question-meta">Frage #{id}</div>
     </div>
   );

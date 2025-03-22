@@ -85,21 +85,21 @@ body {
   margin-top: 4px;
 }
 
-/* Flashcard */
 .flashcard {
   background: white;
   width: 100%;
-  min-height: 360px;              /* 🟢 Taller card to fit long questions */
+  min-height: 420px; /* ⬅️ was 360px or lower — raise this! */
   border-radius: 12px;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
   padding: 16px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  position: relative;            /* 🟡 Needed for absolute positioning */
+  position: relative;
   margin-top: 8px;
 }
+
+
 
 
 .question-text {
