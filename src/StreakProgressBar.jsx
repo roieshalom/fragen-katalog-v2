@@ -1,13 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Confetti from "react-confetti";
-import useWindowSize from "react-use/lib/useWindowSize";
 
-const MAX_STREAK = 17;
+const MAX_STREAK = 1;
 
 export default function StreakProgressBar({ streak, triggerCelebration, onResetStreak }) {
   const percentage = Math.min((streak / MAX_STREAK) * 100, 100);
-  const { width, height } = useWindowSize();
+  const [showConfetti, setShowConfetti] = useState(false);
+  const [dimensions, setDimensions] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
+  useEffect(() => {
+    const handleResize = () =>
+      setDimensions({ width: window.innerWidth, height: window.innerHeight });
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    if (streak === MAX_STREAK) {
+      // Trigger visible confetti
+      setShowConfetti(true);
+      const timer = setTimeout(() => setShowConfetti(false), 1500); // keep visible for 1.5 sec
+      return () => clearTimeout(timer);
+    }
+  }, [streak]);
 
   return (
     <div className="streak-wrapper">
@@ -30,12 +49,14 @@ export default function StreakProgressBar({ streak, triggerCelebration, onResetS
       </div>
 
       <AnimatePresence>
-        {triggerCelebration && (
+        {showConfetti && (
           <Confetti
-            width={width}
-            height={height}
+            width={dimensions.width}
+            height={dimensions.height}
+            numberOfPieces={800}
+            gravity={0.2}
             recycle={false}
-            numberOfPieces={300}
+            run={showConfetti}
           />
         )}
       </AnimatePresence>
