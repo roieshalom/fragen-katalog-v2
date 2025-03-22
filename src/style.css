@@ -89,8 +89,7 @@ body {
 .flashcard {
   background: white;
   width: 100%;
-  min-height: 250px;
-  max-height: 300px;
+  min-height: 360px;              /* 🟢 Taller card to fit long questions */
   border-radius: 12px;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
   padding: 16px;
@@ -98,8 +97,10 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  position: relative;            /* 🟡 Needed for absolute positioning */
   margin-top: 8px;
 }
+
 
 .question-text {
   font-size: 16px;
@@ -186,11 +187,11 @@ body {
 
 /* Question Number Inside Card */
 .question-meta {
+  position: absolute;
+  bottom: 12px;
+  right: 16px;
   font-size: 13px;
   color: #999;
-  margin-top: auto;
-  text-align: right;
-  padding-top: 8px;
 }
 
 /* Responsive: Mobile First */
