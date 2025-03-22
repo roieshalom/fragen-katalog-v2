@@ -158,16 +158,18 @@ body {
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s ease;
+  outline: none;
 }
 
-.controls button:hover {
-  background-color: #115293;
+.controls button:focus {
+  background-color: #1976d2;
 }
 
 .controls button:active {
-  transform: scale(0.9);
-  background-color: #1976d2 !important; /* force reset to original */
+  background-color: #1976d2;
+  transform: scale(0.98);
 }
+
 
 
 /* Info Footer */
