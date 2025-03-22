@@ -203,7 +203,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  padding: 72px 16px 16px; /* Add top space to match card offset */
+  padding: 20px 16px 16px; /* Add top space to match card offset */
   box-sizing: border-box;
 }
 
