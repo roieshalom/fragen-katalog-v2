@@ -9,8 +9,8 @@ export default function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const basePath = "/fragen-katalog"; // ✅ Always use subpath if dev server runs under it too
-    const jsonPath = `${basePath}/data/questions.json`;
+    const jsonPath = '/data/questions.json';
+
 
     fetch(jsonPath)
       .then((response) => {
