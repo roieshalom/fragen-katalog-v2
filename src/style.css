@@ -202,19 +202,25 @@ body {
   z-index: 1000;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  padding: 72px 16px 16px; /* Add top space to match card offset */
+  box-sizing: border-box;
 }
 
 .about-modal {
   background-color: white;
-  max-width: 380px;
-  width: 90%;
-  padding: 24px;
-  border-radius: 10px;
+  width: 100%;
+  max-width: 400px;
+  min-height: 420px;
+  padding: 16px;
+  border-radius: 12px;
   position: relative;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   overflow-y: auto;
-  max-height: 90vh;
 }
 
 .about-modal h2 {
@@ -232,7 +238,7 @@ body {
   text-decoration: underline;
 }
 
-.close-button {
+.about-modal .close-button {
   position: absolute;
   top: 8px;
   right: 12px;
@@ -243,8 +249,23 @@ body {
   color: #888;
 }
 
-.close-button:hover {
+.about-modal .close-button:hover {
   color: #000;
+}
+
+.about-modal .contact-email {
+  font-size: 13px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.about-modal .contact-email a {
+  color: #1976d2;
+  text-decoration: none;
+}
+
+.about-modal .contact-email a:hover {
+  text-decoration: underline;
 }
 
 /* Responsive: Mobile First */
