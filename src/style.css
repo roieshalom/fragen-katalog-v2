@@ -121,6 +121,17 @@ body {
   margin: 0 0 16px 0; /* top right bottom left */
 }
 
+.yiddish-block {
+  direction: rtl;
+  text-align: right;
+  display: block;
+  word-wrap: break-word;
+  white-space: normal;
+  line-height: 1.6;
+  margin-bottom: 0.6em;
+}
+
+
 /* Answers */
 .answer-list {
   display: flex;
@@ -233,7 +244,7 @@ body {
   background-color: white;
   width: 100%;
   max-width: 400px;
-  min-height: 420px;
+  min-height: 580px; /* ⬅️ Make it taller */
   padding: 16px;
   border-radius: 12px;
   position: relative;
@@ -241,9 +252,11 @@ body {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: 18px;
   overflow-y: auto;
+  line-height: 1.4;
 }
+
 
 .about-modal h2 {
   margin-top: 0;
