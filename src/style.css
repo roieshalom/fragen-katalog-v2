@@ -116,7 +116,7 @@ body {
 }
 
 .question-text {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: normal;
   margin-bottom: 16px;
 }
@@ -129,7 +129,7 @@ body {
 }
 
 .answer-button {
-  font-size: 15px;
+  font-size: 18px;
   padding: 10px;
   border: none;
   border-radius: 6px;
@@ -137,7 +137,8 @@ body {
   cursor: pointer;
   transition: background-color 0.2s ease;
   color: #131313; /* or any color you want */
-  -webkit-appearance: none;
+  appearance: none; /* Standard property */
+  -webkit-appearance: none; /* For WebKit-based browsers */
   -webkit-touch-callout: none;
 }
 

@@ -49,10 +49,10 @@ export default function App() {
       if (newStreak === 17) {
         setTriggerCelebration(true);
         setTimeout(() => {
-          setTriggerCelebration(false);
-          setCorrectStreak(0);
-        }, 3000); // Let confetti play out for 3 seconds
+          setTriggerCelebration(false); // ✅ stop confetti only
+        }, 3000);
       }
+      
     } else {
       setCorrectStreak(0);
     }

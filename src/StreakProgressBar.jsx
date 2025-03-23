@@ -5,28 +5,48 @@ import Confetti from "react-confetti";
 const MAX_STREAK = 1;
 
 export default function StreakProgressBar({ streak, triggerCelebration, onResetStreak }) {
-  const percentage = Math.min((streak / MAX_STREAK) * 100, 100);
-  const [showConfetti, setShowConfetti] = useState(false);
   const [dimensions, setDimensions] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
   });
 
+  const [confettiCount, setConfettiCount] = useState(0);
+  const [runConfetti, setRunConfetti] = useState(false);
+
+  const percentage = Math.min((streak / MAX_STREAK) * 100, 100);
+  const isFull = streak === MAX_STREAK;
+
   useEffect(() => {
-    const handleResize = () =>
-      setDimensions({ width: window.innerWidth, height: window.innerHeight });
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   useEffect(() => {
-    if (streak === MAX_STREAK) {
-      // Trigger visible confetti
-      setShowConfetti(true);
-      const timer = setTimeout(() => setShowConfetti(false), 1500); // keep visible for 1.5 sec
-      return () => clearTimeout(timer);
+    if (isFull) {
+      setConfettiCount(25000);     // 🎉 start burst
+      setRunConfetti(true);      // ✅ trigger visible confetti
+
+      const stopGenerating = setTimeout(() => {
+        setConfettiCount(0);     // 🛑 stop generating new
+      }, 800);
+
+      const stopRunning = setTimeout(() => {
+        setRunConfetti(false);   // 🧹 turn off confetti animation
+      }, 3000);
+
+      return () => {
+        clearTimeout(stopGenerating);
+        clearTimeout(stopRunning);
+      };
     }
-  }, [streak]);
+  }, [isFull]);
 
   return (
     <div className="streak-wrapper">
@@ -40,7 +60,7 @@ export default function StreakProgressBar({ streak, triggerCelebration, onResetS
 
         <div className="streak-bar-content">
           <span className="streak-text">17 richtige Fragen</span>
-          {streak === MAX_STREAK && (
+          {isFull && (
             <button className="streak-reset-inline" onClick={onResetStreak}>
               Reset
             </button>
@@ -49,14 +69,14 @@ export default function StreakProgressBar({ streak, triggerCelebration, onResetS
       </div>
 
       <AnimatePresence>
-        {showConfetti && (
+        {runConfetti && (
           <Confetti
             width={dimensions.width}
             height={dimensions.height}
-            numberOfPieces={800}
-            gravity={0.2}
+            numberOfPieces={confettiCount}
+            gravity={0.4}
             recycle={false}
-            run={showConfetti}
+            run={true} // keep it running so existing pieces fall
           />
         )}
       </AnimatePresence>
