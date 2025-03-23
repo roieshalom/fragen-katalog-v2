@@ -1,52 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import Confetti from "react-confetti";
+import React, { useEffect } from "react";
+import { motion } from "framer-motion";
+import confetti from "canvas-confetti";
 
 const MAX_STREAK = 1;
 
 export default function StreakProgressBar({ streak, triggerCelebration, onResetStreak }) {
-  const [dimensions, setDimensions] = useState({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
-
-  const [confettiCount, setConfettiCount] = useState(0);
-  const [runConfetti, setRunConfetti] = useState(false);
-
   const percentage = Math.min((streak / MAX_STREAK) * 100, 100);
   const isFull = streak === MAX_STREAK;
 
   useEffect(() => {
-    const handleResize = () => {
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight,
-      });
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  useEffect(() => {
     if (isFull) {
-      setConfettiCount(25000);     // 🎉 start burst
-      setRunConfetti(true);      // ✅ trigger visible confetti
-
-      const stopGenerating = setTimeout(() => {
-        setConfettiCount(0);     // 🛑 stop generating new
-      }, 800);
-
-      const stopRunning = setTimeout(() => {
-        setRunConfetti(false);   // 🧹 turn off confetti animation
-      }, 3000);
-
-      return () => {
-        clearTimeout(stopGenerating);
-        clearTimeout(stopRunning);
-      };
+      // 🎉 First burst
+      confetti({
+        particleCount: 500,
+        startVelocity: 45,
+        spread: 90,
+        angle: 90,
+        gravity: 0.5,
+        origin: { y: 1 },
+      });
+  
+      // 🎉 Second burst 500ms later
+      setTimeout(() => {
+        confetti({
+          particleCount: 500,
+          startVelocity: 45,
+          spread: 90,
+          angle: 90,
+          gravity: 0.5,
+          origin: { y: 1 },
+        });
+      }, 500);
     }
   }, [isFull]);
+  
 
   return (
     <div className="streak-wrapper">
@@ -57,7 +44,6 @@ export default function StreakProgressBar({ streak, triggerCelebration, onResetS
           animate={{ width: `${percentage}%` }}
           transition={{ duration: 0.4 }}
         />
-
         <div className="streak-bar-content">
           <span className="streak-text">17 richtige Fragen</span>
           {isFull && (
@@ -67,19 +53,6 @@ export default function StreakProgressBar({ streak, triggerCelebration, onResetS
           )}
         </div>
       </div>
-
-      <AnimatePresence>
-        {runConfetti && (
-          <Confetti
-            width={dimensions.width}
-            height={dimensions.height}
-            numberOfPieces={confettiCount}
-            gravity={0.4}
-            recycle={false}
-            run={true} // keep it running so existing pieces fall
-          />
-        )}
-      </AnimatePresence>
     </div>
   );
 }

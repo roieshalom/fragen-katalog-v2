@@ -3414,11 +3414,5 @@
             "Justizsenator / Justizsenatorin"
         ],
         "correct_answer": "Senator / Senatorin für Außenbeziehungen"
-    },
-    {
-        "question_number": 999,
-        "question": "TEST — Is this working?",
-        "options": ["Yes", "No"],
-        "correct_answer": "Yes"
-      }
+    }
 ]    
