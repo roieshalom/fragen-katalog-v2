@@ -98,7 +98,7 @@ body {
   flex-direction: column;
   align-items: center;
   flex-grow: 1;
-  margin-top: 4px;
+  margin-top: 0px;
 }
 
 .flashcard {
@@ -106,13 +106,13 @@ body {
   width: 100%;
   min-height: 420px; /* ⬅️ was 360px or lower — raise this! */
   border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 12px #e7e7e7;
   padding: 16px;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   position: relative;
-  margin-top: 8px;
+  margin-top: 0px;
 }
 
 .question-text {
@@ -133,9 +133,12 @@ body {
   padding: 10px;
   border: none;
   border-radius: 6px;
-  background-color: #eeeeee;
+  background-color: #e1e5eb;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  color: #131313; /* or any color you want */
+  -webkit-appearance: none;
+  -webkit-touch-callout: none;
 }
 
 .answer-button:active {
@@ -292,12 +295,13 @@ body {
     max-height: none;
   }
   .streak-wrapper {
-    margin: 0.2 rem auto;
+    margin: 0.2rem auto;
     padding: 0; /* Remove side padding */
     width: 100%;
     display: flex;
     justify-content: center;
-  }  
+  }
+} 
 
   .streak-bar-background {
     width: 100%;
@@ -331,7 +335,7 @@ body {
     text-align: center;
     display: block;
   }  
-}
+  
 .streak-reset-container {
   display: flex;
   justify-content: flex-end;
@@ -380,7 +384,7 @@ body {
   padding: 0;
 }
 .streak-wrapper {
-  margin: 1rem auto;
+  margin: 0.2rem auto;
   padding: 0;
   width: 100%;
   display: flex;
