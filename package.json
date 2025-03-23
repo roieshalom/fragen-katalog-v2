@@ -11,8 +11,11 @@
     "deploy": "vite build && gh-pages -d dist"
   },
   "dependencies": {
+    "@lottiefiles/react-lottie-player": "^3.6.0",
     "canvas-confetti": "^1.9.3",
+    "firebase": "^11.5.0",
     "framer-motion": "^12.5.0",
+    "lottie-react": "^2.4.1",
     "react": "^19.0.0",
     "react-confetti": "^6.4.0",
     "react-dom": "^19.0.0",

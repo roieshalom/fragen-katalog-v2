@@ -255,6 +255,9 @@ body {
   justify-content: 18px;
   overflow-y: auto;
   line-height: 1.4;
+  position: relative;
+  z-index: 1001; /* 👈 ensure it's above other stuff */
+  pointer-events: auto;
 }
 
 

@@ -134,17 +134,8 @@ export default function App() {
         )}
       </main>
 
-      {showAbout && (
-        <div className="about-modal-overlay" onClick={handleOverlayClick}>
-          <div className="about-modal">
-            <button className="close-button" onClick={() => setShowAbout(false)}>×</button>
-            <p><strong>DE</strong><br />Die Nutzung dieser privaten Webanwendung erfolgt auf eigene Gefahr. Der Inhalt ist unzuverlässig, irreführend, unvollständig und möglicherweise schädlich. Ich empfehle dringend, diese Anwendung nicht zu verwenden.</p>
-            <p><strong>EN</strong><br />This private and personal webapp is under construction. The content is unreliable, misleading, partial and harmful. I strongly recommend you not to use it in any way. Any usage you make is at your own risk!</p>
-            <p><strong>YI</strong><br /><span style={{ direction: 'rtl', textAlign: 'right', display: 'block' }}>דער פּריוואַט און פּערזענלעך וועבאַפּ איז אונטער קאַנסטראַקשאַן. דער אינהאַלט איז אַנרילייאַבאַל, מיסלידינג, פּאַרטיייש און שעדלעך. איך רעקאָמענדירן איר נישט צו נוצן עס אין קיין וועג. יעדער באַניץ איר מאַכן איז אויף דיין אייגענע ריזיקירן!</span></p>
-            <p className="contact-email">💌 <a href="mailto:fragen@fragen-katalog.com">fragen@fragen-katalog.com</a></p>
-          </div>
-        </div>
-      )}
+      {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
+
     </div>
   );
 }
