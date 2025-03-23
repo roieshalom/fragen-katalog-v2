@@ -7,22 +7,31 @@ export default function Flashcard({
   selectedAnswer,
   onSelectAnswer,
   id,
-  imageId, // ✅ new prop
+  imageId,
 }) {
+  console.log("Image ID:", imageId); // 🧪 debug log
+
   if (!question || !answers || answers.length === 0) {
     return <p>Loading question...</p>;
   }
 
   return (
     <div className="flashcard">
-      {/* Group question + answers together at the top */}
       <div className="question-section">
-        {/* ✅ Optional image above question text */}
+
+        {/* ✅ show image if applicable */}
         {imageId && (
           <img
             src={`/images/${imageId}.png`}
             alt={`Bild zu Frage ${id}`}
             className="question-image"
+            style={{
+              width: '100%',
+              maxHeight: '120px',
+              objectFit: 'contain',
+              borderRadius: '8px',
+              marginBottom: '10px',
+            }}
           />
         )}
 
@@ -60,7 +69,6 @@ export default function Flashcard({
         </div>
       </div>
 
-      {/* Always pinned to bottom right */}
       <div className="question-meta">Frage #{id}</div>
     </div>
   );

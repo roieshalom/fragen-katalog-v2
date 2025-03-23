@@ -13,6 +13,10 @@ export default function App() {
   const [correctStreak, setCorrectStreak] = useState(0);
   const [triggerCelebration, setTriggerCelebration] = useState(false);
 
+  const imageQuestionNumbers = new Set([
+    21, 55, 70, 130, 176, 181, 187, 209, 216, 226, 235, 301, 308
+  ]);
+
   useEffect(() => {
     const jsonPath = '/data/questions.json';
 
@@ -22,13 +26,16 @@ export default function App() {
         return response.json();
       })
       .then((data) => {
-        const formattedQuestions = data.map((item) => ({
-          id: item.question_number ?? "N/A",
-          question: item.question ?? "No question provided",
-          answers: item.options ?? [],
-          correct: item.options ? item.options.indexOf(item.correct_answer) : -1,
-          imageId: item.image ? item.question_number : null, // ✅ if item.image is true
-        }));
+        const formattedQuestions = data.map((item) => {
+          const qNum = item.question_number;
+          return {
+            id: qNum ?? "N/A",
+            question: item.question ?? "No question provided",
+            answers: item.options ?? [],
+            correct: item.options ? item.options.indexOf(item.correct_answer) : -1,
+            imageId: imageQuestionNumbers.has(qNum) ? qNum : null,
+          };
+        });
 
         setQuestions(formattedQuestions);
         setLoading(false);
@@ -109,7 +116,7 @@ export default function App() {
               correctIndex={questions[currentQuestion]?.correct}
               selectedAnswer={selectedAnswer}
               onSelectAnswer={handleSelectAnswer}
-              imageId={questions[currentQuestion]?.imageId} // ✅ pass to Flashcard
+              imageId={questions[currentQuestion]?.imageId}
             />
 
             <div className="controls">
@@ -134,7 +141,7 @@ export default function App() {
             <p><strong>Source:</strong><br /><a href="https://www.lebenindeutschland.eu/fragenkatalog/1" target="_blank" rel="noopener noreferrer">https://www.lebenindeutschland.eu/fragenkatalog/1</a></p>
             <p><strong>EN</strong><br />This private and personal webapp is under construction. The content is unreliable, misleading, partial and harmful. I strongly recommend you not to use it in any way. Any usage you make is at your own risk!</p>
             <p><strong>DE</strong><br />Die Nutzung dieser privaten Webanwendung erfolgt auf eigene Gefahr. Der Inhalt ist unzuverlässig, irreführend, unvollständig und möglicherweise schädlich. Ich empfehle dringend, diese Anwendung nicht zu verwenden.</p>
-            <p><strong>YI</strong><br /><span style={{ direction: 'rtl', textAlign: 'right', display: 'block' }}>דער פּריוואַט און פּערזענלעך וועבאַפּ איז אונטער קאַנסטראַקשאַן. דער אינהאַלט איז אַנרילייאַבאַל, מיסלידינג, פּאַרטיייש און שעדלעך. איך רעקאָמענדירן איר נישט צו נוצן עס אין קיין וועג. יעדער באַניץ איר מאַכן איז אויף דיין אייגענע ריזיקירן!</span></p>
+            <p><strong>YI</strong><br /><span style={{ direction: 'rtl', textAlign: 'right', display: 'block' }}>דער פּריוואַט און פּערזענלעך וועבאַפּ איז אונטער קאַנסטראַקשאַן...</span></p>
             <p className="contact-email">💌 <a href="mailto:fragen@fragen-katalog.com">fragen@fragen-katalog.com</a></p>
           </div>
         </div>
