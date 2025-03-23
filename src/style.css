@@ -292,7 +292,7 @@ body {
     max-height: none;
   }
   .streak-wrapper {
-    margin: 1rem auto;
+    margin: 0.2 rem auto;
     padding: 0; /* Remove side padding */
     width: 100%;
     display: flex;
