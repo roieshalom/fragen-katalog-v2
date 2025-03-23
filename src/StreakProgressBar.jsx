@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 
-const MAX_STREAK = 1;
+const MAX_STREAK = 17;
 
 export default function StreakProgressBar({ streak, triggerCelebration, onResetStreak }) {
   const percentage = Math.min((streak / MAX_STREAK) * 100, 100);
@@ -13,26 +13,27 @@ export default function StreakProgressBar({ streak, triggerCelebration, onResetS
       // 🎉 First burst
       confetti({
         particleCount: 500,
-        startVelocity: 45,
+        startVelocity: 60,         // 🚀 shoot higher
         spread: 90,
         angle: 90,
         gravity: 0.5,
-        origin: { y: 1 },
+        origin: { y: 1.2 },        // 🎯 launch from below screen
       });
   
-      // 🎉 Second burst 500ms later
+      // 🎉 Second burst after delay
       setTimeout(() => {
         confetti({
           particleCount: 500,
-          startVelocity: 45,
+          startVelocity: 60,
           spread: 90,
           angle: 90,
           gravity: 0.5,
-          origin: { y: 1 },
+          origin: { y: 1.2 },
         });
       }, 500);
     }
   }, [isFull]);
+  
   
 
   return (
