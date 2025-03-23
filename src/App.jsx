@@ -27,6 +27,7 @@ export default function App() {
           question: item.question ?? "No question provided",
           answers: item.options ?? [],
           correct: item.options ? item.options.indexOf(item.correct_answer) : -1,
+          imageId: item.image ? item.question_number : null, // ✅ if item.image is true
         }));
 
         setQuestions(formattedQuestions);
@@ -49,10 +50,9 @@ export default function App() {
       if (newStreak === 17) {
         setTriggerCelebration(true);
         setTimeout(() => {
-          setTriggerCelebration(false); // ✅ stop confetti only
+          setTriggerCelebration(false);
         }, 3000);
       }
-      
     } else {
       setCorrectStreak(0);
     }
@@ -109,6 +109,7 @@ export default function App() {
               correctIndex={questions[currentQuestion]?.correct}
               selectedAnswer={selectedAnswer}
               onSelectAnswer={handleSelectAnswer}
+              imageId={questions[currentQuestion]?.imageId} // ✅ pass to Flashcard
             />
 
             <div className="controls">

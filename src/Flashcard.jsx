@@ -1,6 +1,14 @@
 import React from "react";
 
-export default function Flashcard({ question, answers, correctIndex, selectedAnswer, onSelectAnswer, id }) {
+export default function Flashcard({
+  question,
+  answers,
+  correctIndex,
+  selectedAnswer,
+  onSelectAnswer,
+  id,
+  imageId, // ✅ new prop
+}) {
   if (!question || !answers || answers.length === 0) {
     return <p>Loading question...</p>;
   }
@@ -9,6 +17,15 @@ export default function Flashcard({ question, answers, correctIndex, selectedAns
     <div className="flashcard">
       {/* Group question + answers together at the top */}
       <div className="question-section">
+        {/* ✅ Optional image above question text */}
+        {imageId && (
+          <img
+            src={`/images/${imageId}.png`}
+            alt={`Bild zu Frage ${id}`}
+            className="question-image"
+          />
+        )}
+
         <p className="question-text">{question}</p>
 
         <div className="answer-list">
