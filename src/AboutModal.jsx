@@ -4,6 +4,8 @@ import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import { Player } from "@lottiefiles/react-lottie-player";
 import confettiAnimation from "./animations/confetti.json";
 import "./style.css";
+import { analytics } from "./firebase";
+import { logEvent } from "firebase/analytics";
 
 export default function AboutModal({ onClose }) {
   const [count, setCount] = useState(0);
@@ -28,22 +30,29 @@ export default function AboutModal({ onClose }) {
     };
 
     fetchCount();
+    logEvent(analytics, "about_modal_opened");
   }, []);
 
   const handleHiFive = async () => {
-    if (clicked && !IS_ME) return;
-
-    const ref = doc(db, "global", "hiFive");
-    await updateDoc(ref, { count: count + 1 });
-
-    setCount(count + 1);
+    // Prevent spamming by checking local storage and state
+    if (clicked || localStorage.getItem("hiFiveClicked")) return;
+  
     setClicked(true);
     localStorage.setItem("hiFiveClicked", "true");
-
+  
+    const ref = doc(db, "global", "hiFive");
+    await updateDoc(ref, { count: count + 1 });
+  
+    setCount(count + 1);
+  
     // 🎉 Show animation
     setShowAnimation(true);
     setTimeout(() => setShowAnimation(false), 2000);
+  
+    // 🔥 Log hi-five clicked
+    logEvent(analytics, "hi_five_clicked");
   };
+  
 
   return (
     <div className="about-modal-overlay">
