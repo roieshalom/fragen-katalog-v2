@@ -1,12 +1,6 @@
-import React, { useState, useEffect } from "react";
-import Flashcard from "./Flashcard";
-import AboutModal from "./AboutModal";
-import StreakProgressBar from "./StreakProgressBar";
-import "./style.css";
-
-// 👇 Add these two lines
 import { analytics } from "./firebase";
 import { logEvent } from "firebase/analytics";
+import { useState, useEffect } from "react";
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
@@ -24,35 +18,29 @@ export default function App() {
   useEffect(() => {
     const jsonPath = '/data/questions.json';
 
+    if (analytics) {
+      logEvent(analytics, "test_event_fired");
+      console.log("📤 test_event_fired sent");
+    }
+
     fetch(jsonPath)
       .then((response) => {
         if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
         return response.json();
       })
       .then((data) => {
-        const formattedQuestions = data.map((item) => {
-          const qNum = item.question_number;
-          return {
-            id: qNum ?? "N/A",
-            question: item.question ?? "No question provided",
-            answers: item.options ?? [],
-            correct: item.options ? item.options.indexOf(item.correct_answer) : -1,
-            imageId: imageQuestionNumbers.has(qNum) ? qNum : null,
-          };
-        });
-
-        setQuestions(formattedQuestions);
+        setQuestions(data);
         setLoading(false);
-
-        // ✅ Log test event only once when questions load
-        logEvent(analytics, "test_event_fired");
-
       })
-      .catch((error) => {
-        console.error("❌ Error loading questions:", error);
-        setLoading(false);
-      });
+      .catch((error) => console.error("Error fetching questions:", error));
   }, []);
+
+  return (
+    <div>
+      {/* Your component JSX */}
+    </div>
+  );
+}
 
 
   const handleSelectAnswer = (index) => {
@@ -147,4 +135,4 @@ export default function App() {
 
     </div>
   );
-}
+
