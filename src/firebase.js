@@ -16,17 +16,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Default value in case analytics is not supported
 let analytics = null;
 
-// Ensure gtag exists before setting debug_mode
-window.gtag = window.gtag || function () {};
-gtag('set', 'debug_mode', true);
-
-// Load analytics only if supported
-isSupported().then((enabled) => {
-  if (enabled) {
+isSupported().then((supported) => {
+  if (supported) {
     analytics = getAnalytics(app);
+    // Enable debug mode for analytics
+    window.gtag = window.gtag || function () {};
+    gtag("set", "debug_mode", true);
     console.log("📈 Firebase Analytics initialized with debug_mode");
   } else {
     console.warn("⚠️ Firebase Analytics not supported on this device.");

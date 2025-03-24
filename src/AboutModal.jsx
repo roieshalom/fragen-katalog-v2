@@ -6,6 +6,10 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import confettiAnimation from "./animations/confetti.json";
 import "./style.css";
 
+if (analytics) {
+  logEvent(analytics, "event_name");
+}
+
 export default function AboutModal({ onClose }) {
   const [count, setCount] = useState(0);
   const [clicked, setClicked] = useState(false);
