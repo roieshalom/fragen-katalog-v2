@@ -1,6 +1,10 @@
+import React, { useState, useEffect } from "react";
+import Flashcard from "./Flashcard";
+import AboutModal from "./AboutModal";
+import StreakProgressBar from "./StreakProgressBar";
+import "./style.css";
 import { analytics } from "./firebase";
 import { logEvent } from "firebase/analytics";
-import { useState, useEffect } from "react";
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
@@ -29,19 +33,25 @@ export default function App() {
         return response.json();
       })
       .then((data) => {
-        setQuestions(data);
+        const formattedQuestions = data.map((item) => {
+          const qNum = item.question_number;
+          return {
+            id: qNum ?? "N/A",
+            question: item.question ?? "No question provided",
+            answers: item.options ?? [],
+            correct: item.options ? item.options.indexOf(item.correct_answer) : -1,
+            imageId: imageQuestionNumbers.has(qNum) ? qNum : null,
+          };
+        });
+
+        setQuestions(formattedQuestions);
         setLoading(false);
       })
-      .catch((error) => console.error("Error fetching questions:", error));
+      .catch((error) => {
+        console.error("❌ Error loading questions:", error);
+        setLoading(false);
+      });
   }, []);
-}
-
-export default function App() {
-  return (
-    <div>✅ All good</div>
-  );
-}
-
 
   const handleSelectAnswer = (index) => {
     const isCorrect = index === questions[currentQuestion]?.correct;
@@ -132,7 +142,6 @@ export default function App() {
       </main>
 
       {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
-
     </div>
   );
-
+}
