@@ -11,15 +11,15 @@ const firebaseConfig = {
   messagingSenderId: "208859056966",
   appId: "1:208859056966:web:039f86d0b8722e4395f347",
   measurementId: "G-STMLG4PCQ1",
-
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-let analytics;
-if (typeof window !== "undefined") {
-  analytics = getAnalytics(app);
-}
+const analytics = getAnalytics(app);
+
+// 👇 Make sure debug_mode is enabled globally
+window.gtag = window.gtag || function () {};
+gtag('set', 'debug_mode', true);
 
 console.log("📈 Firebase Analytics initialized");
 
