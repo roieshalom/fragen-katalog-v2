@@ -34,11 +34,11 @@ export default function App() {
       })
       .catch((error) => console.error("Error fetching questions:", error));
   }, []);
+}
 
+export default function App() {
   return (
-    <div>
-      {/* Your component JSX */}
-    </div>
+    <div>✅ All good</div>
   );
 }
 
