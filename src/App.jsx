@@ -4,6 +4,10 @@ import AboutModal from "./AboutModal";
 import StreakProgressBar from "./StreakProgressBar";
 import "./style.css";
 
+// 👇 Add these two lines
+import { analytics } from "./firebase";
+import { logEvent } from "firebase/analytics";
+
 export default function App() {
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -39,12 +43,17 @@ export default function App() {
 
         setQuestions(formattedQuestions);
         setLoading(false);
+
+        // ✅ Log test event only once when questions load
+        logEvent(analytics, "test_event_fired");
+
       })
       .catch((error) => {
         console.error("❌ Error loading questions:", error);
         setLoading(false);
       });
   }, []);
+
 
   const handleSelectAnswer = (index) => {
     const isCorrect = index === questions[currentQuestion]?.correct;
