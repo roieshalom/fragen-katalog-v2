@@ -16,7 +16,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const analytics = getAnalytics(app);
+const analytics = getAnalytics(app); // ✅ must be here!
+
+console.log("📈 Firebase Analytics initialized");
 
 export { db, analytics };
-
