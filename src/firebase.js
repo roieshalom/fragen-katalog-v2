@@ -1,7 +1,7 @@
 // src/firebase.js
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBDD29_0DyHGF2J6804sOothQileESrLuA",
@@ -15,12 +15,22 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const analytics = getAnalytics(app);
 
-// 👇 Make sure debug_mode is enabled globally
+// Default value in case analytics is not supported
+let analytics = null;
+
+// Ensure gtag exists before setting debug_mode
 window.gtag = window.gtag || function () {};
 gtag('set', 'debug_mode', true);
 
-console.log("📈 Firebase Analytics initialized");
+// Load analytics only if supported
+isSupported().then((enabled) => {
+  if (enabled) {
+    analytics = getAnalytics(app);
+    console.log("📈 Firebase Analytics initialized with debug_mode");
+  } else {
+    console.warn("⚠️ Firebase Analytics not supported on this device.");
+  }
+});
 
 export { db, analytics };
