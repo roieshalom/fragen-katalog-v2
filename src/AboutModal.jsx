@@ -88,8 +88,7 @@ export default function AboutModal({ onClose }) {
         <p><strong>YI/ </strong>
         דער פּריוואַט און פּערזענלעך וועבאַפּ איז אונטער קאַנסטראַקשאַן. דער אינהאַלט איז אַנרילייאַבאַל, מיסלידינג, פּאַרטיייש און שעדלעך. איך רעקאָמענדירן איר נישט צו נוצן עס אין קיין וועג. יעדער באַניץ איר מאַכן איז אויף דיין אייגענע ריזיקירן !</p>
 
-        <p className="contact-email">
-          💌 <a href="mailto:fragen@fragen-katalog.com">fragen@fragen-katalog.com</a>
+        <p style={{ textAlign: "center" }}> 💌 <a className="contact-email" href="mailto:fragen@fragen-katalog.com">fragen@fragen-katalog.com</a>
         </p>
 
         <div style={{ textAlign: "center", marginTop: "1.5em" }}>

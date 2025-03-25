@@ -80,7 +80,7 @@ body {
   color: #1976d2;
   text-decoration: underline;
   padding-top: 8px;
-  text-align: right;
+  text-align: center;
   display: inline-block;  /* 👈 ensure each link is treated separately */
   padding: 4px 6px;  
 }
@@ -562,4 +562,17 @@ body {
   border-radius: 8px;
   box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
   cursor: zoom-out;
+}
+.about-modal p:first-of-type {
+  font-size: 20px;         /* 👈 make the title bigger */
+  margin-bottom: 12px;     /* 👈 slightly more space after the title */
+}
+
+.about-modal p {
+  margin: 8px 0;           /* 👈 reduce spacing between text blocks */
+  line-height: 1.4;
+}
+
+.about-modal .contact-email {
+  margin-top: 12px;
 }
