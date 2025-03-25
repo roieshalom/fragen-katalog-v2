@@ -70,6 +70,13 @@ export default function App() {
     } else {
       setCorrectStreak(0);
     }
+    if (analytics) {
+      logEvent(analytics, "question_answered", {
+        question_id: questions[currentQuestion]?.id,
+        correct: isCorrect,
+      });
+    }
+    
   };
 
   const nextQuestion = () => {

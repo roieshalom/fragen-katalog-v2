@@ -6,10 +6,6 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import confettiAnimation from "./animations/confetti.json";
 import "./style.css";
 
-if (analytics) {
-  logEvent(analytics, "event_name");
-}
-
 export default function AboutModal({ onClose }) {
   const [count, setCount] = useState(0);
   const [clicked, setClicked] = useState(false);
@@ -36,26 +32,26 @@ export default function AboutModal({ onClose }) {
     };
 
     fetchCount();
-    logEvent(analytics, "about_modal_opened");
+    logEvent(analytics, "about_modal_opened", { userType: IS_ME ? "dev" : "guest" });
   }, []);
 
   const handleHiFive = async () => {
     const alreadyClicked = localStorage.getItem("hiFiveClicked");
-  
+
     // 🔒 Real users: block if already clicked
     if (alreadyClicked && !IS_ME) return;
-  
+
     // 👇 Set clicked visually + persist (but only once for real users)
     setClicked(true);
     if (!alreadyClicked && !IS_ME) {
       localStorage.setItem("hiFiveClicked", "true");
-  
+
       // 🔄 Update Firestore count
       const ref = doc(db, "global", "hiFive");
       await updateDoc(ref, { count: count + 1 });
       setCount((prev) => prev + 1);
     }
-  
+
     // 🎉 Only allow animation if:
     // - you're the dev (IS_ME), or
     // - it's the user's first click
@@ -64,9 +60,9 @@ export default function AboutModal({ onClose }) {
       setShowAnimation(true);
       setTimeout(() => setShowAnimation(false), 2000);
     }
-  
-    logEvent(analytics, "hi_five_clicked");
-  };  
+
+    logEvent(analytics, "hi_five_clicked", { userType: IS_ME ? "dev" : "guest" });
+  };
 
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains("about-modal-overlay")) {
