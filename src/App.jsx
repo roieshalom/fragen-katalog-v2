@@ -7,6 +7,8 @@ import { analytics } from "./firebase";
 import { logEvent } from "firebase/analytics";
 import { doc, updateDoc, setDoc, increment } from "firebase/firestore";
 import { db } from "./firebase";
+import StatsModal from "./StatsModal";
+
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
@@ -16,6 +18,10 @@ export default function App() {
   const [showAbout, setShowAbout] = useState(false);
   const [correctStreak, setCorrectStreak] = useState(0);
   const [triggerCelebration, setTriggerCelebration] = useState(false);
+
+  const [showStats, setShowStats] = useState(false);
+const SHOW_STATS = true; // ← set to false before deploy if needed
+
 
   const imageQuestionNumbers = new Set([
     21, 55, 70, 130, 176, 181, 187, 209, 216, 226, 235, 301, 308
@@ -123,8 +129,17 @@ export default function App() {
             <h1 className="app-title">Fragen-Katalog</h1>
             <p className="subtitle">Under Construction</p>
           </div>
-          <a href="#" className="about-link" onClick={(e) => { e.preventDefault(); setShowAbout(true); }}>About</a>
+          <a href="#" className="about-link" onClick={(e) => { e.preventDefault(); setShowAbout(true); }}>Über</a>
         </div>
+        {SHOW_STATS && (
+  <a href="#" className="about-link" onClick={(e) => {
+    e.preventDefault();
+    setShowStats(true);
+  }}>
+    Statistiken
+  </a>
+)}
+
       </header>
 
       <main className="main-content">
@@ -164,6 +179,8 @@ export default function App() {
       </main>
 
       {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
+      {showStats && <StatsModal onClose={() => setShowStats(false)} />}
+
     </div>
   );
 }
