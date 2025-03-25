@@ -20,7 +20,7 @@ export default function App() {
   const [triggerCelebration, setTriggerCelebration] = useState(false);
 
   const [showStats, setShowStats] = useState(false);
-const SHOW_STATS = true; // ← set to false before deploy if needed
+  const SHOW_STATS = window.location.hostname !== "fragen-katalog.com";
 
 
   const imageQuestionNumbers = new Set([
@@ -124,21 +124,24 @@ const SHOW_STATS = true; // ← set to false before deploy if needed
   return (
     <div className="app-wrapper">
       <header className="app-header">
-        <div className="header-inner">
-          <div className="header-titles">
-            <h1 className="app-title">Fragen-Katalog</h1>
-            <p className="subtitle">Under Construction</p>
-          </div>
-          <a href="#" className="about-link" onClick={(e) => { e.preventDefault(); setShowAbout(true); }}>Über</a>
-        </div>
-        {SHOW_STATS && (
-  <a href="#" className="about-link" onClick={(e) => {
-    e.preventDefault();
-    setShowStats(true);
-  }}>
-    Statistiken
-  </a>
-)}
+      <div className="header-inner">
+  <div className="header-titles">
+    <h1 className="app-title">Fragen-Katalog</h1>
+    <p className="subtitle">Under Construction</p>
+  </div>
+  <div className="header-links">
+    {SHOW_STATS && (
+      <a href="#" className="about-link" onClick={(e) => {
+        e.preventDefault();
+        setShowStats(true);
+      }}>
+        Statistiken
+      </a>
+    )}
+    <a href="#" className="about-link" onClick={(e) => { e.preventDefault(); setShowAbout(true); }}>Über</a>
+  </div>
+</div>
+
 
       </header>
 

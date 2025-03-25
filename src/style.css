@@ -43,6 +43,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  .header-links {
+    display: flex;
+    gap: 12px;
+    padding-top: 8px;
+  }
+  
 }
 
 .header-content {
@@ -75,6 +81,8 @@ body {
   text-decoration: underline;
   padding-top: 8px;
   text-align: right;
+  display: inline-block;  /* 👈 ensure each link is treated separately */
+  padding: 4px 6px;  
 }
 
 .about-link:hover {
