@@ -5,6 +5,8 @@ import StreakProgressBar from "./StreakProgressBar";
 import "./style.css";
 import { analytics } from "./firebase";
 import { logEvent } from "firebase/analytics";
+import { doc, updateDoc, setDoc, increment } from "firebase/firestore";
+import { db } from "./firebase";
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
@@ -53,7 +55,7 @@ export default function App() {
       });
   }, []);
 
-  const handleSelectAnswer = (index) => {
+  const handleSelectAnswer = async (index) => {
     const isCorrect = index === questions[currentQuestion]?.correct;
 
     setSelectedAnswer(index);
@@ -70,13 +72,26 @@ export default function App() {
     } else {
       setCorrectStreak(0);
     }
+
+    const questionId = String(questions[currentQuestion]?.id);
+
     if (analytics) {
       logEvent(analytics, "question_answered", {
-        question_id: questions[currentQuestion]?.id,
+        question_id: questionId,
         correct: isCorrect,
       });
     }
-    
+
+    // 🔥 Track per-question stats in Firestore
+    const statsRef = doc(db, "questionStats", questionId);
+
+    await setDoc(statsRef, { total: 0, correct: 0, wrong: 0 }, { merge: true });
+
+    await updateDoc(statsRef, {
+      total: increment(1),
+      correct: isCorrect ? increment(1) : increment(0),
+      wrong: !isCorrect ? increment(1) : increment(0),
+    });
   };
 
   const nextQuestion = () => {
