@@ -135,7 +135,7 @@ export default function App() {
         e.preventDefault();
         setShowStats(true);
       }}>
-        Statistiken
+                Statistiken
       </a>
     )}
     <a href="#" className="about-link" onClick={(e) => { e.preventDefault(); setShowAbout(true); }}>Über</a>
@@ -182,7 +182,17 @@ export default function App() {
       </main>
 
       {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
-      {showStats && <StatsModal onClose={() => setShowStats(false)} />}
+      {showStats && (
+  <StatsModal
+    onClose={(jumpToIndex) => {
+      setShowStats(false);
+      if (typeof jumpToIndex === "number") {
+        setCurrentQuestion(jumpToIndex);
+      }
+    }}
+    questions={questions}
+  />
+)}
 
     </div>
   );

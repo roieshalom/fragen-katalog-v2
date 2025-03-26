@@ -262,7 +262,6 @@ body {
   flex-direction: column;
   justify-content: 18px;
   overflow-y: auto;
-  line-height: 1.4;
   position: relative;
   z-index: 1001; /* 👈 ensure it's above other stuff */
   pointer-events: auto;
@@ -575,4 +574,23 @@ body {
 
 .about-modal .contact-email {
   margin-top: 12px;
+}
+
+.modal-subtitle {
+  margin-top: 0;
+  margin-bottom: 0; /* Adjust as needed for tighter or looser spacing */
+  font-size: 1.2em; /* Optional: consistent subtitle sizing */
+}
+
+.about-modal {
+  max-height: 90vh; /* Set a fixed maximum height */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Prevent overflow from affecting layout */
+}
+
+.stats-scroll-content {
+  overflow-y: auto;
+  padding-right: 8px; /* space for scrollbar */
+  flex: 1;
 }
