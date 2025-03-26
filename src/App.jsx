@@ -20,7 +20,7 @@ export default function App() {
   const [triggerCelebration, setTriggerCelebration] = useState(false);
 
   const [showStats, setShowStats] = useState(false);
-  const SHOW_STATS = window.location.hostname !== "fragen-katalog.com";
+  const SHOW_STATS = true;
 
 
   const imageQuestionNumbers = new Set([
