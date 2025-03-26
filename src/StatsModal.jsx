@@ -35,12 +35,12 @@ export default function StatsModal({ onClose, questions }) {
   const topCorrect = [...questionStats]
     .filter((q) => q.correct > 0)
     .sort((a, b) => b.correct - a.correct)
-    .slice(0, 10);
+    .slice(0, 5);
 
   const topWrong = [...questionStats]
     .filter((q) => q.wrong > 0)
     .sort((a, b) => b.wrong - a.wrong)
-    .slice(0, 10);
+    .slice(0, 5);
 
   const getQuestionText = (id) => {
     if (!Array.isArray(questions)) return `Frage #${id}`;
@@ -51,7 +51,7 @@ export default function StatsModal({ onClose, questions }) {
   const jumpToQuestion = (id) => {
     const index = questions.findIndex((q) => String(q.id) === String(id));
     if (index !== -1) {
-      onClose(index); // App.jsx will use this to jump to question
+      onClose(index);
     }
   };
 
@@ -62,82 +62,53 @@ export default function StatsModal({ onClose, questions }) {
         if (e.target.classList.contains("about-modal-overlay")) onClose();
       }}
     >
-      <div className="about-modal" style={{ maxHeight: "500px", display: "flex", flexDirection: "column" }}>
+      <div className="about-modal">
         <button className="close-button" onClick={() => onClose()}>
           &times;
         </button>
         <h2 className="modal-title">Statistiken</h2>
 
-        <div
-          className="modal-content"
-          style={{ overflowY: "auto", flex: 1, paddingRight: "10px" }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "60px",
-              marginBottom: "12px",
-              flexWrap: "wrap",
-            }}
-          >
-            <div style={{ textAlign: "center" }}>
-              <p style={{ marginBottom: "0", fontSize: "18px" }}>
-                Beantwortete<br />Fragen
-              </p>
-              <p style={{ fontWeight: "bold", fontSize: "28px", color: "#888" }}>
-                {totalAnswered}
-              </p>
+        <div className="modal-content">
+          <div className="stats-summary">
+            <div className="stats-summary-box">
+              <p>Beantwortete<br />Fragen</p>
+              <p className="big-number">{totalAnswered}</p>
             </div>
-            <div style={{ textAlign: "center" }}>
-              <p style={{ marginBottom: "0", fontSize: "18px" }}>
-                Richtig<br />beantwortete
-              </p>
-              <p style={{ fontWeight: "bold", fontSize: "28px", color: "#888" }}>
-                {correctPercentage}%
-              </p>
+            <div className="stats-summary-box">
+              <p>Richtig<br />beantwortete</p>
+              <p className="big-number">{correctPercentage}%</p>
             </div>
           </div>
 
-          <h3 className="modal-subtitle" style={{ marginTop: "10px", marginBottom: "6px" }}>
-            Top 10 Richtig beantwortete Fragen
+          <h3 className="modal-subtitle">
+            Top 5 <span className="green-text">Richtig</span> beantwortete Fragen
           </h3>
-          <ol style={{ marginTop: "0" }}>
+          <div className="answer-list">
             {topCorrect.map((q) => (
-              <li key={q.id} style={{ marginBottom: "10px" }}>
-                {getQuestionText(q.id)}{" "}
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    jumpToQuestion(q.id);
-                  }}
-                >
-                  Selbst beantworten
-                </a>
-              </li>
+              <div
+                key={q.id}
+                className="answer-button"
+                onClick={() => jumpToQuestion(q.id)}
+              >
+                {getQuestionText(q.id)}
+              </div>
             ))}
-          </ol>
+          </div>
 
-          <h3 className="modal-subtitle" style={{ marginTop: "10px", marginBottom: "6px" }}>
-            Top 10 Falsch beantwortete Fragen
+          <h3 className="modal-subtitle" style={{ marginTop: "20px" }}>
+            Top 5 <span className="red-text">Falsch</span> beantwortete Fragen
           </h3>
-          <ol style={{ marginTop: "0" }}>
+          <div className="answer-list">
             {topWrong.map((q) => (
-              <li key={q.id} style={{ marginBottom: "10px" }}>
-                {getQuestionText(q.id)}{" "}
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    jumpToQuestion(q.id);
-                  }}
-                >
-                  Selbst beantworten
-                </a>
-              </li>
+              <div
+                key={q.id}
+                className="answer-button"
+                onClick={() => jumpToQuestion(q.id)}
+              >
+                {getQuestionText(q.id)}
+              </div>
             ))}
-          </ol>
+          </div>
         </div>
       </div>
     </div>
