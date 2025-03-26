@@ -56,37 +56,49 @@ export default function StatsModal({ onClose, questions }) {
   };
 
   return (
-    <div className="about-modal-overlay" onClick={(e) => {
-      if (e.target.classList.contains("about-modal-overlay")) onClose();
-    }}>
-      <div
-        className="about-modal"
-        style={{ display: "flex", flexDirection: "column", maxHeight: "90vh" }}
-      >
+    <div
+      className="about-modal-overlay"
+      onClick={(e) => {
+        if (e.target.classList.contains("about-modal-overlay")) onClose();
+      }}
+    >
+      <div className="about-modal" style={{ maxHeight: "500px", display: "flex", flexDirection: "column" }}>
         <button className="close-button" onClick={() => onClose()}>
           &times;
         </button>
-  
-        <h2 className="modal-title" style={{ marginBottom: "10px" }}>Statistiken</h2>
-  
-        <div style={{ overflowY: "auto", flex: 1, paddingRight: "10px" }}>
-          <div style={{
-            display: "flex",
-            justifyContent: "center",
-            gap: "60px",
-            marginBottom: "12px",
-            flexWrap: "wrap"
-          }}>
+        <h2 className="modal-title">Statistiken</h2>
+
+        <div
+          className="modal-content"
+          style={{ overflowY: "auto", flex: 1, paddingRight: "10px" }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              gap: "60px",
+              marginBottom: "12px",
+              flexWrap: "wrap",
+            }}
+          >
             <div style={{ textAlign: "center" }}>
-              <p style={{ marginBottom: "0", fontSize: "18px" }}>Beantwortete<br />Fragen</p>
-              <p style={{ fontWeight: "bold", fontSize: "28px", color: "#888" }}>{totalAnswered}</p>
+              <p style={{ marginBottom: "0", fontSize: "18px" }}>
+                Beantwortete<br />Fragen
+              </p>
+              <p style={{ fontWeight: "bold", fontSize: "28px", color: "#888" }}>
+                {totalAnswered}
+              </p>
             </div>
             <div style={{ textAlign: "center" }}>
-              <p style={{ marginBottom: "0", fontSize: "18px" }}>Richtig<br />beantwortete</p>
-              <p style={{ fontWeight: "bold", fontSize: "28px", color: "#888" }}>{correctPercentage}%</p>
+              <p style={{ marginBottom: "0", fontSize: "18px" }}>
+                Richtig<br />beantwortete
+              </p>
+              <p style={{ fontWeight: "bold", fontSize: "28px", color: "#888" }}>
+                {correctPercentage}%
+              </p>
             </div>
           </div>
-  
+
           <h3 className="modal-subtitle" style={{ marginTop: "10px", marginBottom: "6px" }}>
             Top 10 Richtig beantwortete Fragen
           </h3>
@@ -94,13 +106,19 @@ export default function StatsModal({ onClose, questions }) {
             {topCorrect.map((q) => (
               <li key={q.id} style={{ marginBottom: "10px" }}>
                 {getQuestionText(q.id)}{" "}
-                <a href="#" onClick={(e) => { e.preventDefault(); jumpToQuestion(q.id); }}>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    jumpToQuestion(q.id);
+                  }}
+                >
                   Selbst beantworten
                 </a>
               </li>
             ))}
           </ol>
-  
+
           <h3 className="modal-subtitle" style={{ marginTop: "10px", marginBottom: "6px" }}>
             Top 10 Falsch beantwortete Fragen
           </h3>
@@ -108,7 +126,13 @@ export default function StatsModal({ onClose, questions }) {
             {topWrong.map((q) => (
               <li key={q.id} style={{ marginBottom: "10px" }}>
                 {getQuestionText(q.id)}{" "}
-                <a href="#" onClick={(e) => { e.preventDefault(); jumpToQuestion(q.id); }}>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    jumpToQuestion(q.id);
+                  }}
+                >
                   Selbst beantworten
                 </a>
               </li>
@@ -118,4 +142,4 @@ export default function StatsModal({ onClose, questions }) {
       </div>
     </div>
   );
-}  
+}

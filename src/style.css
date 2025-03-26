@@ -594,3 +594,15 @@ body {
   padding-right: 8px; /* space for scrollbar */
   flex: 1;
 }
+.about-modal {
+  max-height: 500px; /* or whatever the height of the About modal is */
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-content {
+  overflow-y: auto;
+  padding-right: 10px; /* optional: avoids scroll cutting into content */
+  margin-top: 10px;
+}
