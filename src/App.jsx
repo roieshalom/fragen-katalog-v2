@@ -5,7 +5,7 @@ import StreakProgressBar from "./StreakProgressBar";
 import "./style.css";
 import { analytics } from "./firebase";
 import { logEvent } from "firebase/analytics";
-import { doc, updateDoc, setDoc, increment, getDoc } from "firebase/firestore";
+import { doc, updateDoc, setDoc, increment } from "firebase/firestore";
 import { db } from "./firebase";
 import StatsModal from "./StatsModal";
 
@@ -22,11 +22,11 @@ export default function App() {
   const SHOW_STATS = true;
 
   const imageQuestionNumbers = new Set([
-    21, 55, 70, 130, 176, 181, 187, 209, 216, 226, 235, 301, 308
+    21, 55, 70, 130, 176, 181, 187, 209, 216, 226, 235, 301, 308,
   ]);
 
   useEffect(() => {
-    const jsonPath = '/data/questions.json';
+    const jsonPath = "/data/questions.json";
 
     if (analytics) {
       logEvent(analytics, "test_event_fired");
@@ -35,7 +35,8 @@ export default function App() {
 
     fetch(jsonPath)
       .then((response) => {
-        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        if (!response.ok)
+          throw new Error(`HTTP error! Status: ${response.status}`);
         return response.json();
       })
       .then((data) => {
@@ -45,7 +46,9 @@ export default function App() {
             id: qNum ?? "N/A",
             question: item.question ?? "No question provided",
             answers: item.options ?? [],
-            correct: item.options ? item.options.indexOf(item.correct_answer) : -1,
+            correct: item.options
+              ? item.options.indexOf(item.correct_answer)
+              : -1,
             imageId: imageQuestionNumbers.has(qNum) ? qNum : null,
           };
         });
@@ -89,23 +92,23 @@ export default function App() {
     // ✅ Track to Firestore
     try {
       const statsRef = doc(db, "questionStats", questionId);
-      const statsSnap = await getDoc(statsRef);
-    
-      if (!statsSnap.exists()) {
-        await setDoc(statsRef, { total: 0, correct: 0, wrong: 0 });
-      }
-    
+
+      console.log("⬆️ Trying to update Firestore for", questionId);
+
       await updateDoc(statsRef, {
         total: increment(1),
         correct: isCorrect ? increment(1) : increment(0),
-        wrong: isCorrect ? increment(0) : increment(1), // ✅ always included!
+        wrong: !isCorrect ? increment(1) : increment(0),
       });
-    
-      console.log(`📊 Firestore updated: Frage ${questionId} → ${isCorrect ? "richtig" : "falsch"}`);
+
+      console.log(
+        `📊 Firestore updated: Frage ${questionId} → ${
+          isCorrect ? "richtig" : "falsch"
+        }`
+      );
     } catch (err) {
       console.error("❌ Firestore update failed:", err);
     }
-    
   };
 
   const nextQuestion = () => {
@@ -139,14 +142,27 @@ export default function App() {
           </div>
           <div className="header-links">
             {SHOW_STATS && (
-              <a href="#" className="about-link" onClick={(e) => {
-                e.preventDefault();
-                setShowStats(true);
-              }}>
+              <a
+                href="#"
+                className="about-link"
+                onClick={(e) => {
+                  e.preventDefault();
+                  setShowStats(true);
+                }}
+              >
                 Statistiken
               </a>
             )}
-            <a href="#" className="about-link" onClick={(e) => { e.preventDefault(); setShowAbout(true); }}>Über</a>
+            <a
+              href="#"
+              className="about-link"
+              onClick={(e) => {
+                e.preventDefault();
+                setShowAbout(true);
+              }}
+            >
+              Über
+            </a>
           </div>
         </div>
       </header>
@@ -179,11 +195,15 @@ export default function App() {
             </div>
 
             <div className="info-footer">
-              <p className="total-questions">Insgesamt: {questions.length} Fragen</p>
+              <p className="total-questions">
+                Insgesamt: {questions.length} Fragen
+              </p>
             </div>
           </>
         ) : (
-          <p className="error-text">❌ Keine Fragen verfügbar. Bitte die JSON-Datei prüfen.</p>
+          <p className="error-text">
+            ❌ Keine Fragen verfügbar. Bitte die JSON-Datei prüfen.
+          </p>
         )}
       </main>
 
