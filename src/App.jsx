@@ -5,7 +5,7 @@ import StreakProgressBar from "./StreakProgressBar";
 import "./style.css";
 import { analytics } from "./firebase";
 import { logEvent } from "firebase/analytics";
-import { doc, setDoc, increment } from "firebase/firestore";
+import { doc, setDoc, updateDoc, increment } from "firebase/firestore";
 import { db } from "./firebase";
 import StatsModal from "./StatsModal";
 
@@ -89,21 +89,17 @@ export default function App() {
       });
     }
 
-    // ✅ Track to Firestore using safe setDoc with merge + increment
+    // ✅ Track to Firestore with fallback for new documents
     try {
       const statsRef = doc(db, "questionStats", questionId);
 
       console.log("⬆️ Trying to update Firestore for", questionId);
 
-      await setDoc(
-        statsRef,
-        {
-          total: increment(1),
-          correct: isCorrect ? increment(1) : increment(0),
-          wrong: !isCorrect ? increment(1) : increment(0),
-        },
-        { merge: true }
-      );
+      await updateDoc(statsRef, {
+        total: increment(1),
+        correct: isCorrect ? increment(1) : increment(0),
+        wrong: !isCorrect ? increment(1) : increment(0),
+      });
 
       console.log(
         `📊 Firestore updated: Frage ${questionId} → ${
@@ -111,7 +107,19 @@ export default function App() {
         }`
       );
     } catch (err) {
-      console.error("❌ Firestore update failed:", err);
+      if (err.code === "not-found") {
+        console.warn(`📄 Creating new Firestore doc for Frage ${questionId}`);
+
+        await setDoc(doc(db, "questionStats", questionId), {
+          total: 1,
+          correct: isCorrect ? 1 : 0,
+          wrong: isCorrect ? 0 : 1,
+        });
+
+        console.log(`🆕 Firestore document created for Frage ${questionId}`);
+      } else {
+        console.error("❌ Firestore update failed:", err);
+      }
     }
   };
 
