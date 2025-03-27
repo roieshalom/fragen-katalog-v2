@@ -5,7 +5,7 @@ import StreakProgressBar from "./StreakProgressBar";
 import "./style.css";
 import { analytics } from "./firebase";
 import { logEvent } from "firebase/analytics";
-import { doc, updateDoc, setDoc, increment } from "firebase/firestore";
+import { doc, setDoc, increment } from "firebase/firestore";
 import { db } from "./firebase";
 import StatsModal from "./StatsModal";
 
@@ -89,17 +89,21 @@ export default function App() {
       });
     }
 
-    // ✅ Track to Firestore
+    // ✅ Track to Firestore using safe setDoc with merge + increment
     try {
       const statsRef = doc(db, "questionStats", questionId);
 
       console.log("⬆️ Trying to update Firestore for", questionId);
 
-      await updateDoc(statsRef, {
-        total: increment(1),
-        correct: isCorrect ? increment(1) : increment(0),
-        wrong: !isCorrect ? increment(1) : increment(0),
-      });
+      await setDoc(
+        statsRef,
+        {
+          total: increment(1),
+          correct: isCorrect ? increment(1) : increment(0),
+          wrong: !isCorrect ? increment(1) : increment(0),
+        },
+        { merge: true }
+      );
 
       console.log(
         `📊 Firestore updated: Frage ${questionId} → ${
