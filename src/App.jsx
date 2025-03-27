@@ -5,10 +5,9 @@ import StreakProgressBar from "./StreakProgressBar";
 import "./style.css";
 import { analytics } from "./firebase";
 import { logEvent } from "firebase/analytics";
-import { doc, updateDoc, setDoc, increment } from "firebase/firestore";
+import { doc, updateDoc, setDoc, increment, getDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import StatsModal from "./StatsModal";
-
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
@@ -21,7 +20,6 @@ export default function App() {
 
   const [showStats, setShowStats] = useState(false);
   const SHOW_STATS = true;
-
 
   const imageQuestionNumbers = new Set([
     21, 55, 70, 130, 176, 181, 187, 209, 216, 226, 235, 301, 308
@@ -64,7 +62,7 @@ export default function App() {
   const handleSelectAnswer = async (index) => {
     const isCorrect = index === questions[currentQuestion]?.correct;
     setSelectedAnswer(index);
-  
+
     if (isCorrect) {
       const newStreak = correctStreak + 1;
       setCorrectStreak(newStreak);
@@ -77,9 +75,9 @@ export default function App() {
     } else {
       setCorrectStreak(0);
     }
-  
+
     const questionId = String(questions[currentQuestion]?.id);
-  
+
     // ✅ Log to Firebase Analytics
     if (analytics) {
       logEvent(analytics, "question_answered", {
@@ -87,25 +85,28 @@ export default function App() {
         correct: isCorrect,
       });
     }
-  
+
     // ✅ Track to Firestore
     try {
       const statsRef = doc(db, "questionStats", questionId);
-  
-      await setDoc(statsRef, { total: 0, correct: 0, wrong: 0 }, { merge: true });
-  
+      const statsSnap = await getDoc(statsRef);
+    
+      if (!statsSnap.exists()) {
+        await setDoc(statsRef, { total: 0, correct: 0, wrong: 0 });
+      }
+    
       await updateDoc(statsRef, {
         total: increment(1),
         correct: isCorrect ? increment(1) : increment(0),
-        wrong: !isCorrect ? increment(1) : increment(0),
+        wrong: isCorrect ? increment(0) : increment(1), // ✅ always included!
       });
-  
+    
       console.log(`📊 Firestore updated: Frage ${questionId} → ${isCorrect ? "richtig" : "falsch"}`);
     } catch (err) {
       console.error("❌ Firestore update failed:", err);
     }
+    
   };
-  
 
   const nextQuestion = () => {
     setSelectedAnswer(null);
@@ -131,25 +132,23 @@ export default function App() {
   return (
     <div className="app-wrapper">
       <header className="app-header">
-      <div className="header-inner">
-  <div className="header-titles">
-    <h1 className="app-title">Fragen-Katalog</h1>
-    <p className="subtitle">Under Construction</p>
-  </div>
-  <div className="header-links">
-    {SHOW_STATS && (
-      <a href="#" className="about-link" onClick={(e) => {
-        e.preventDefault();
-        setShowStats(true);
-      }}>
+        <div className="header-inner">
+          <div className="header-titles">
+            <h1 className="app-title">Fragen-Katalog</h1>
+            <p className="subtitle">Under Construction</p>
+          </div>
+          <div className="header-links">
+            {SHOW_STATS && (
+              <a href="#" className="about-link" onClick={(e) => {
+                e.preventDefault();
+                setShowStats(true);
+              }}>
                 Statistiken
-      </a>
-    )}
-    <a href="#" className="about-link" onClick={(e) => { e.preventDefault(); setShowAbout(true); }}>Über</a>
-  </div>
-</div>
-
-
+              </a>
+            )}
+            <a href="#" className="about-link" onClick={(e) => { e.preventDefault(); setShowAbout(true); }}>Über</a>
+          </div>
+        </div>
       </header>
 
       <main className="main-content">
@@ -190,17 +189,16 @@ export default function App() {
 
       {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
       {showStats && (
-  <StatsModal
-    onClose={(jumpToIndex) => {
-      setShowStats(false);
-      if (typeof jumpToIndex === "number") {
-        setCurrentQuestion(jumpToIndex);
-      }
-    }}
-    questions={questions}
-  />
-)}
-
+        <StatsModal
+          onClose={(jumpToIndex) => {
+            setShowStats(false);
+            if (typeof jumpToIndex === "number") {
+              setCurrentQuestion(jumpToIndex);
+            }
+          }}
+          questions={questions}
+        />
+      )}
     </div>
   );
 }
