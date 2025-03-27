@@ -476,11 +476,22 @@ html, body {
   white-space: nowrap;
 }
 .modal-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
   overflow-y: auto;
-  flex: 1;
-  margin-top: 10px;
+  max-height: calc(90vh - 100px); /* prevent overflow below screen */
+  width: 100%;
+  box-sizing: border-box;
+  padding-bottom: 8px;
   scrollbar-width: none; /* Firefox */
 }
+
+/* Hide scrollbar for WebKit browsers */
+.modal-content::-webkit-scrollbar {
+  display: none;
+}
+
 
 /* Chrome, Edge, Safari */
 .modal-content::-webkit-scrollbar {
