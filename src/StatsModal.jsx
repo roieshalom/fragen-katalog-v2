@@ -35,12 +35,12 @@ export default function StatsModal({ onClose, questions }) {
   const topCorrect = [...questionStats]
     .filter((q) => q.correct > 0)
     .sort((a, b) => b.correct - a.correct)
-    .slice(0, 5);
+    .slice(0, 3);
 
   const topWrong = [...questionStats]
     .filter((q) => q.wrong > 0)
     .sort((a, b) => b.wrong - a.wrong)
-    .slice(0, 5);
+    .slice(0, 3);
 
   const getQuestionText = (id) => {
     if (!Array.isArray(questions)) return `Frage #${id}`;
@@ -81,7 +81,7 @@ export default function StatsModal({ onClose, questions }) {
           </div>
 
           <h3 className="modal-subtitle">
-            Top 5 <span className="green-text">Richtig</span> beantwortete Fragen
+            Top 3 <span className="green-text">Richtig</span> beantwortete Fragen
           </h3>
           <div className="answer-list">
             {topCorrect.map((q) => (
@@ -96,7 +96,7 @@ export default function StatsModal({ onClose, questions }) {
           </div>
 
           <h3 className="modal-subtitle" style={{ marginTop: "20px" }}>
-            Top 5 <span className="red-text">Falsch</span> beantwortete Fragen
+            Top 3 <span className="red-text">Falsch</span> beantwortete Fragen
           </h3>
           <div className="answer-list">
             {topWrong.map((q) => (
