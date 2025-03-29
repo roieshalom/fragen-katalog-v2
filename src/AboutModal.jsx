@@ -25,16 +25,17 @@ export default function AboutModal({ onClose }) {
 
         <div className="max-w-prose w-full px-4 text-center">
           <p className="text-base mb-3">
-            🇩🇪 Ich habe diese Website als Lernhilfe für den Einbürgerungstest „Leben in Deutschland“ gebaut.
-            Die Inhalte basieren auf dem offiziellen Fragenkatalog der Bundeszentrale für politische Bildung,
-            jedoch ohne Garantie für Richtigkeit oder Aktualität.
-            Es handelt sich um ein privates Nebenprojekt – keine Anmeldung, keine Werbung, keine Verbindung zu staatlichen Stellen.
+          🇩🇪 Ich habe diese Website als Lernhilfe für den Einbürgerungstest „Leben in Deutschland“ erstellt.
+          Die Fragen basieren auf dem offiziellen Fragenkatalog der Bundeszentrale für politische Bildung — 
+          inklusive des landesspezifischen Teils für Berlin.Ich übernehme keine Gewähr für Richtigkeit oder Aktualität.
+          Dies ist ein rein privates Nebenprojekt – keine Anmeldung, keine Werbung, keine Verbindung zu staatlichen Stellen.
           </p>
 
           <p className="text-base mb-3">
-            🇬🇧 I built this website as a personal study tool for the "Leben in Deutschland" naturalization test.
-            The content is based on the official public catalog, but I can’t guarantee accuracy or updates.
-            This is a private side project — no login, no ads, no government affiliation.
+          🇬🇧 I built this website as a personal study tool for the “Leben in Deutschland” naturalization test.
+          The questions are based on the official public catalog — including the state-specific questions for Berlin.
+          Some states have different regional questions. I can’t guarantee accuracy or updates.
+          This is a private side project — no login, no ads, no government affiliation.
           </p>
         </div>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "70px", marginTop: "0.5rem" }}>

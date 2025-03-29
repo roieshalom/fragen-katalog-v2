@@ -88,7 +88,7 @@ html, body {
 
 .header-links {
   display: flex;
-  gap: 12px;
+  gap: 0px;
   padding-top: 8px;
 }
 
@@ -117,16 +117,19 @@ html, body {
 }
 
 .about-link {
-  font-size: 14px;
-  color: var(--color-primary);
-  text-decoration: underline;
-  padding: 4px 6px;
   display: inline-block;
-  text-align: center;
+  padding: 6px 12px;
+  font-size: 16px;
+  color: var(--color-primary);
+  background-color: transparent;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
 }
 
 .about-link:hover {
-  text-decoration: underline;
+  background-color: #e6f0fa;
+  text-decoration: none;
 }
 
 /* === Flashcard === */
@@ -144,7 +147,8 @@ html, body {
 }
 
 .question-text {
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: 500;
   margin-bottom: 16px;
   margin-top: 4px;
 }
