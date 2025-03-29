@@ -66,28 +66,28 @@ export default function StatsModal({ onClose, questions }) {
         <button className="close-button" onClick={() => onClose()}>
           &times;
         </button>
-        <h2 className="modal-title">Statistiken</h2>
+        <h2 className="text-xl font-bold mb-4">Statistiken</h2>
 
         <div className="modal-content">
           <div className="stats-summary">
             <div className="stats-summary-box">
-              <p>Beantwortete<br />Fragen</p>
+              <p className="text-sm">Beantwortete<br />Fragen</p>
               <p className="big-number">{totalAnswered}</p>
             </div>
             <div className="stats-summary-box">
-              <p>Richtig<br />beantwortete</p>
+              <p className="text-sm">Richtig<br />beantwortete</p>
               <p className="big-number">{correctPercentage}%</p>
             </div>
           </div>
 
-          <h3 className="modal-subtitle">
+          <h3 className="modal-subtitle text-lg font-semibold mb-2">
             Top 3 <span className="green-text">Richtig</span> beantwortete Fragen
           </h3>
-          <div className="answer-list">
+          <div className="answer-list mb-4">
             {topCorrect.map((q) => (
               <div
                 key={q.id}
-                className="answer-button"
+                className="answer-button text-sm"
                 onClick={() => jumpToQuestion(q.id)}
               >
                 {getQuestionText(q.id)}
@@ -95,14 +95,14 @@ export default function StatsModal({ onClose, questions }) {
             ))}
           </div>
 
-          <h3 className="modal-subtitle" style={{ marginTop: "20px" }}>
+          <h3 className="modal-subtitle text-lg font-semibold mb-2">
             Top 3 <span className="red-text">Falsch</span> beantwortete Fragen
           </h3>
           <div className="answer-list">
             {topWrong.map((q) => (
               <div
                 key={q.id}
-                className="answer-button"
+                className="answer-button text-sm"
                 onClick={() => jumpToQuestion(q.id)}
               >
                 {getQuestionText(q.id)}

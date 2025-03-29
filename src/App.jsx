@@ -201,9 +201,9 @@ export default function App() {
             />
 
             <div className="controls">
-              <button onClick={prevQuestion}>◀︎ Zurück</button>
-              <button onClick={randomQuestion}>Zufällig</button>
-              <button onClick={nextQuestion}>Weiter ▶︎</button>
+              <button className="controls-button" onClick={prevQuestion}>◀︎ Zurück</button>
+              <button className="controls-button" onClick={randomQuestion}>Zufällig</button>
+              <button className="controls-button" onClick={nextQuestion}>Weiter ▶︎</button>
             </div>
 
             <div className="info-footer">

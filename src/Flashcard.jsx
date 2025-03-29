@@ -22,7 +22,7 @@ export default function Flashcard({
   }, []);
 
   if (!question || !answers || answers.length === 0) {
-    return <p>Loading question...</p>;
+    return <p className="text-base">Loading question...</p>;
   }
 
   const imageUrl = imageId ? `/images/${imageId}.png` : null;
@@ -41,7 +41,7 @@ export default function Flashcard({
             />
           )}
 
-          <p className="question-text">{question}</p>
+          <p className="question-text text-base font-medium mb-4 mt-2">{question}</p>
 
           <div className="answer-list">
             {answers.map((answer, index) => {
@@ -49,7 +49,7 @@ export default function Flashcard({
               const isCorrect = index === correctIndex;
               const isChosen = index === selectedAnswer;
 
-              let buttonClass = "answer-button";
+              let buttonClass = "answer-button text-base";
               if (isSelected) {
                 if (isCorrect) {
                   buttonClass += " correct";
@@ -75,7 +75,7 @@ export default function Flashcard({
           </div>
         </div>
 
-        <div className="question-meta">Frage #{id}</div>
+        <div className="question-meta text-sm text-muted-light">Frage #{id}</div>
       </div>
 
       {/* Lightbox Overlay */}

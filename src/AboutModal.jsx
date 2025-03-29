@@ -1,68 +1,12 @@
-import React, { useEffect, useState, useRef } from "react";
-import { db, analytics } from "./firebase";
-import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
+import React, { useEffect } from "react";
+import { analytics } from "./firebase";
 import { logEvent } from "firebase/analytics";
-import { Player } from "@lottiefiles/react-lottie-player";
-import confettiAnimation from "./animations/confetti.json";
 import "./style.css";
 
 export default function AboutModal({ onClose }) {
-  const [count, setCount] = useState(0);
-  const [clicked, setClicked] = useState(false);
-  const [showAnimation, setShowAnimation] = useState(false);
-  const isSubmitting = useRef(false); // prevent double fire
-
-  const IS_ME = false; // Set to false before going live!
-
   useEffect(() => {
-    const hasClicked = localStorage.getItem("hiFiveClicked");
-
-    if (hasClicked && !IS_ME) {
-      setClicked(true);
-    }
-
-    const fetchCount = async () => {
-      const ref = doc(db, "global", "hiFive");
-      const snapshot = await getDoc(ref);
-      if (snapshot.exists()) {
-        setCount(snapshot.data().count || 0);
-      } else {
-        await setDoc(ref, { count: 0 });
-      }
-    };
-
-    fetchCount();
-    logEvent(analytics, "about_modal_opened", { userType: IS_ME ? "dev" : "guest" });
+    logEvent(analytics, "about_modal_opened");
   }, []);
-
-  const handleHiFive = async () => {
-    const alreadyClicked = localStorage.getItem("hiFiveClicked");
-
-    // 🔒 Real users: block if already clicked
-    if (alreadyClicked && !IS_ME) return;
-
-    // 👇 Set clicked visually + persist (but only once for real users)
-    setClicked(true);
-    if (!alreadyClicked && !IS_ME) {
-      localStorage.setItem("hiFiveClicked", "true");
-
-      // 🔄 Update Firestore count
-      const ref = doc(db, "global", "hiFive");
-      await updateDoc(ref, { count: count + 1 });
-      setCount((prev) => prev + 1);
-    }
-
-    // 🎉 Only allow animation if:
-    // - you're the dev (IS_ME), or
-    // - it's the user's first click
-    const allowAnimation = IS_ME || !alreadyClicked;
-    if (allowAnimation) {
-      setShowAnimation(true);
-      setTimeout(() => setShowAnimation(false), 2000);
-    }
-
-    logEvent(analytics, "hi_five_clicked", { userType: IS_ME ? "dev" : "guest" });
-  };
 
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains("about-modal-overlay")) {
@@ -72,65 +16,44 @@ export default function AboutModal({ onClose }) {
 
   return (
     <div className="about-modal-overlay" onClick={handleOverlayClick}>
-      <div className="about-modal">
-        <button className="close-button" onClick={onClose}>
+      <div className="about-modal overflow-y-auto max-h-[90vh] flex flex-col items-center">
+        <button className="close-button self-end" onClick={onClose}>
           &times;
         </button>
 
-        <p><strong>Über</strong></p>
-        
-        <p><strong>DE/ </strong>
-        Die Nutzung dieser privaten Webanwendung erfolgt auf eigene Gefahr. Der Inhalt ist unzuverlässig, irreführend, unvollständig und möglicherweise schädlich. Ich empfehle dringend, diese Anwendung nicht zu verwenden.</p>
+        <h2 className="text-xl font-bold mb-4 text-center">Über</h2>
 
-        <p><strong>EN/ </strong>
-         This private and personal webapp is under construction. The content is unreliable, misleading, partial and harmful. I strongly recommend you not to use it in any way. Any usage you make is at your own risk!</p>
+        <div className="max-w-prose w-full px-4 text-center">
+          <p className="text-base mb-3">
+            🇩🇪 Ich habe diese Website als Lernhilfe für den Einbürgerungstest „Leben in Deutschland“ gebaut.
+            Die Inhalte basieren auf dem offiziellen Fragenkatalog der Bundeszentrale für politische Bildung,
+            jedoch ohne Garantie für Richtigkeit oder Aktualität.
+            Es handelt sich um ein privates Nebenprojekt – keine Anmeldung, keine Werbung, keine Verbindung zu staatlichen Stellen.
+          </p>
 
-        <p><strong>YI/ </strong>
-        דער פּריוואַט און פּערזענלעך וועבאַפּ איז אונטער קאַנסטראַקשאַן. דער אינהאַלט איז אַנרילייאַבאַל, מיסלידינג, פּאַרטיייש און שעדלעך. איך רעקאָמענדירן איר נישט צו נוצן עס אין קיין וועג. יעדער באַניץ איר מאַכן איז אויף דיין אייגענע ריזיקירן !</p>
-
-        <p style={{ textAlign: "center" }}> 💌 <a className="contact-email" href="mailto:fragen@fragen-katalog.com">fragen@fragen-katalog.com</a>
-        </p>
-
-        <div style={{ textAlign: "center", marginTop: "1.5em" }}>
-          <button
-            onClick={handleHiFive}
-            disabled={clicked && !IS_ME}
-            style={{
-              backgroundColor: clicked ? "#ccc" : "#1976d2",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              padding: "10px 16px",
-              fontSize: "16px",
-              cursor: clicked && !IS_ME ? "default" : "pointer",
-              opacity: clicked && !IS_ME ? 0.7 : 1,
-              transition: "background-color 0.3s ease",
-              position: "relative",
-            }}
-          >
-            {clicked ? "👋 Danke!" : "👋 High-Five"}
-            {showAnimation && (
-              <Player
-                autoplay
-                loop={false}
-                src={confettiAnimation}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  transform: "translate(-50%, -50%)",
-                  height: "150px",
-                  width: "150px",
-                  pointerEvents: "none",
-                }}
-              />
-            )}
-          </button>
-
-          <p style={{ marginTop: "8px", fontSize: "14px", color: "#444" }}>
-            {count} people gave a high-five!
+          <p className="text-base mb-3">
+            🇬🇧 I built this website as a personal study tool for the "Leben in Deutschland" naturalization test.
+            The content is based on the official public catalog, but I can’t guarantee accuracy or updates.
+            This is a private side project — no login, no ads, no government affiliation.
           </p>
         </div>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "70px", marginTop: "0.5rem" }}>
+  <a
+    href="mailto:fragen@fragen-katalog.com"
+    className="text-base text-center"
+    style={{ textDecoration: "underline", color: "var(--color-primary)", fontWeight: 500 }}
+  >
+    fragen@fragen-katalog.com
+  </a>
+
+  <button
+  onClick={() => window.open("https://www.buymeacoffee.com/roiesh", "_blank")}
+  className="controls-button"
+  style={{ width: "100%", maxWidth: "200px", textAlign: "center" }}
+>
+  Buy me a coffee
+</button>
+</div>
       </div>
     </div>
   );
