@@ -89,6 +89,7 @@ export default function AboutModal({ onClose }) {
          display: "flex",
          flexDirection: "column",
          alignItems: "center",
+         width: "90%",
          gap: "160px",
        }}
      >
