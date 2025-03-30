@@ -79,11 +79,10 @@ export default function AboutModal({ onClose }) {
           )}
         </div>
 
-        <div style={{ height: "180px" }}></div>
+        <div style={{ height: "100px" }}></div>
 
         <div
           style={{
-            position: "absolute",
             bottom: "40px",
             width: "100%",
             display: "flex",
