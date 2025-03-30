@@ -22,7 +22,7 @@ export default function AboutModal({ onClose }) {
 
   return (
     <div className="about-modal-overlay" onClick={handleOverlayClick}>
-      <div className="about-modal overflow-y-auto max-h-[90vh] flex flex-col">
+      <div className="about-modal overflow-y-auto max-h-[90vh] flex flex-col relative pb-[180px]">
         <div className="w-full flex justify-between items-center px-4 mb-4">
           <h2 className="text-xl font-bold flex items-center gap-4">
             Über
@@ -79,18 +79,19 @@ export default function AboutModal({ onClose }) {
           )}
         </div>
 
-        <div style={{ height: "100px" }}></div>
-
+        {/* Bottom-fixed buttons */}
         <div
-          style={{
-            bottom: "40px",
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "70px",
-          }}
-        >
+       style={{
+         position: "absolute",
+         bottom: "40px",
+         left: "50%",
+         transform: "translateX(-50%)",
+         display: "flex",
+         flexDirection: "column",
+         alignItems: "center",
+         gap: "160px",
+       }}
+     >
           <a
             href="mailto:fragen@fragen-katalog.com"
             className="text-base text-center"
