@@ -21,9 +21,17 @@ let analytics = null;
 isSupported().then((supported) => {
   if (supported) {
     analytics = getAnalytics(app);
-    // Enable debug mode for analytics
-    window.gtag = window.gtag || function () {};
-    gtag("set", "debug_mode", true);
+
+    // ✅ Initialize dataLayer for debug mode
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    // ✅ Enable debug mode before sending any events
+    gtag("js", new Date());
+    gtag("config", firebaseConfig.measurementId, { debug_mode: true });
+
     console.log("📈 Firebase Analytics initialized with debug_mode");
   } else {
     console.warn("⚠️ Firebase Analytics not supported on this device.");

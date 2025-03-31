@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import Flashcard from "./Flashcard";
 import AboutModal from "./AboutModal";
 import StreakProgressBar from "./StreakProgressBar";
-import "./style.css";
-import { analytics } from "./firebase";
-import { logEvent } from "firebase/analytics";
+import StatsModal from "./StatsModal";
 import { doc, setDoc, updateDoc, increment } from "firebase/firestore";
 import { db } from "./firebase";
-import StatsModal from "./StatsModal";
+import logAnalyticsEvent from "./logAnalyticsEvent";
+import "./style.css";
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
@@ -15,10 +14,9 @@ export default function App() {
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showAbout, setShowAbout] = useState(false);
+  const [showStats, setShowStats] = useState(false);
   const [correctStreak, setCorrectStreak] = useState(0);
   const [triggerCelebration, setTriggerCelebration] = useState(false);
-
-  const [showStats, setShowStats] = useState(false);
   const SHOW_STATS = true;
 
   const imageQuestionNumbers = new Set([
@@ -26,38 +24,26 @@ export default function App() {
   ]);
 
   useEffect(() => {
-    const jsonPath = "/data/questions.json";
+    logAnalyticsEvent("session_start");
 
-    if (analytics) {
-      logEvent(analytics, "test_event_fired");
-      console.log("📤 test_event_fired sent");
-    }
-
-    fetch(jsonPath)
-      .then((response) => {
-        if (!response.ok)
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        return response.json();
-      })
+    fetch("/data/questions.json")
+      .then((res) => res.json())
       .then((data) => {
-        const formattedQuestions = data.map((item) => {
+        const formatted = data.map((item) => {
           const qNum = item.question_number;
           return {
             id: qNum ?? "N/A",
             question: item.question ?? "No question provided",
             answers: item.options ?? [],
-            correct: item.options
-              ? item.options.indexOf(item.correct_answer)
-              : -1,
+            correct: item.options?.indexOf(item.correct_answer) ?? -1,
             imageId: imageQuestionNumbers.has(qNum) ? qNum : null,
           };
         });
-
-        setQuestions(formattedQuestions);
+        setQuestions(formatted);
         setLoading(false);
       })
-      .catch((error) => {
-        console.error("❌ Error loading questions:", error);
+      .catch((err) => {
+        console.error("❌ Failed to load questions:", err);
         setLoading(false);
       });
   }, []);
@@ -66,57 +52,32 @@ export default function App() {
     const isCorrect = index === questions[currentQuestion]?.correct;
     setSelectedAnswer(index);
 
-    if (isCorrect) {
-      const newStreak = correctStreak + 1;
-      setCorrectStreak(newStreak);
-      if (newStreak === 17) {
-        setTriggerCelebration(true);
-        setTimeout(() => {
-          setTriggerCelebration(false);
-        }, 3000);
-      }
-    } else {
-      setCorrectStreak(0);
+    const newStreak = isCorrect ? correctStreak + 1 : 0;
+    setCorrectStreak(newStreak);
+
+    if (newStreak === 17) {
+      logAnalyticsEvent("completed_streak_17");
+      setTriggerCelebration(true);
+      setTimeout(() => setTriggerCelebration(false), 3000);
     }
 
     const questionId = String(questions[currentQuestion]?.id);
+    logAnalyticsEvent("question_answered", { question_id: questionId, correct: isCorrect });
 
-    // ✅ Log to Firebase Analytics
-    if (analytics) {
-      logEvent(analytics, "question_answered", {
-        question_id: questionId,
-        correct: isCorrect,
-      });
-    }
-
-    // ✅ Track to Firestore with fallback for new documents
     try {
-      const statsRef = doc(db, "questionStats", questionId);
-
-      console.log("⬆️ Trying to update Firestore for", questionId);
-
-      await updateDoc(statsRef, {
+      const ref = doc(db, "questionStats", questionId);
+      await updateDoc(ref, {
         total: increment(1),
         correct: isCorrect ? increment(1) : increment(0),
         wrong: !isCorrect ? increment(1) : increment(0),
       });
-
-      console.log(
-        `📊 Firestore updated: Frage ${questionId} → ${
-          isCorrect ? "richtig" : "falsch"
-        }`
-      );
     } catch (err) {
       if (err.code === "not-found") {
-        console.warn(`📄 Creating new Firestore doc for Frage ${questionId}`);
-
         await setDoc(doc(db, "questionStats", questionId), {
           total: 1,
           correct: isCorrect ? 1 : 0,
           wrong: isCorrect ? 0 : 1,
         });
-
-        console.log(`🆕 Firestore document created for Frage ${questionId}`);
       } else {
         console.error("❌ Firestore update failed:", err);
       }
@@ -136,12 +97,19 @@ export default function App() {
   const randomQuestion = () => {
     setSelectedAnswer(null);
     setCurrentQuestion(Math.floor(Math.random() * questions.length));
+    logAnalyticsEvent("random_question_clicked");
   };
 
-  const handleOverlayClick = (e) => {
-    if (e.target.classList.contains("about-modal-overlay")) {
-      setShowAbout(false);
-    }
+  const openAboutModal = () => {
+    setShowStats(false);
+    setShowAbout(true);
+    logAnalyticsEvent("about_modal_opened");
+  };
+
+  const openStatsModal = () => {
+    setShowAbout(false);
+    setShowStats(true);
+    logAnalyticsEvent("stats_modal_opened");
   };
 
   return (
@@ -154,25 +122,11 @@ export default function App() {
           </div>
           <div className="header-links">
             {SHOW_STATS && (
-              <a
-                href="#"
-                className="about-link"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setShowStats(true);
-                }}
-              >
+              <a href="#" className="about-link" onClick={(e) => { e.preventDefault(); openStatsModal(); }}>
                 Statistiken
               </a>
             )}
-            <a
-              href="#"
-              className="about-link"
-              onClick={(e) => {
-                e.preventDefault();
-                setShowAbout(true);
-              }}
-            >
+            <a href="#" className="about-link" onClick={(e) => { e.preventDefault(); openAboutModal(); }}>
               Über
             </a>
           </div>
@@ -182,14 +136,13 @@ export default function App() {
       <main className="main-content">
         {loading ? (
           <p className="loading-text">Loading questions...</p>
-        ) : questions.length > 0 ? (
+        ) : (
           <>
             <StreakProgressBar
               streak={correctStreak}
               triggerCelebration={triggerCelebration}
               onResetStreak={() => setCorrectStreak(0)}
             />
-
             <Flashcard
               id={questions[currentQuestion]?.id}
               question={questions[currentQuestion]?.question}
@@ -199,28 +152,26 @@ export default function App() {
               onSelectAnswer={handleSelectAnswer}
               imageId={questions[currentQuestion]?.imageId}
             />
-
             <div className="controls">
-              <button className="controls-button" onClick={prevQuestion}>◀︎ Zurück</button>
-              <button className="controls-button" onClick={randomQuestion}>Zufällig</button>
-              <button className="controls-button" onClick={nextQuestion}>Weiter ▶︎</button>
+              <button className="controls-button" onClick={prevQuestion}>
+                ◀︎ Zurück
+              </button>
+              <button className="controls-button" onClick={randomQuestion}>
+                Zufällig
+              </button>
+              <button className="controls-button" onClick={nextQuestion}>
+                Weiter ▶︎
+              </button>
             </div>
-
             <div className="info-footer">
-              <p className="total-questions">
-                Insgesamt: {questions.length} Fragen
-              </p>
+              <p className="total-questions">Insgesamt: {questions.length} Fragen</p>
             </div>
           </>
-        ) : (
-          <p className="error-text">
-            ❌ Keine Fragen verfügbar. Bitte die JSON-Datei prüfen.
-          </p>
         )}
       </main>
 
-      {showAbout && <AboutModal onClose={() => setShowAbout(false)} />}
-      {showStats && (
+      {showAbout && !showStats && <AboutModal onClose={() => setShowAbout(false)} />}
+      {showStats && !showAbout && (
         <StatsModal
           onClose={(jumpToIndex) => {
             setShowStats(false);

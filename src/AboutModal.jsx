@@ -1,23 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { analytics } from "./firebase";
-import { logEvent } from "firebase/analytics";
+import logAnalyticsEvent from "./logAnalyticsEvent";
 import "./style.css";
 
 export default function AboutModal({ onClose }) {
   const [lang, setLang] = useState("de");
 
   useEffect(() => {
-    logEvent(analytics, "about_modal_opened");
+    logAnalyticsEvent("about_modal_opened");
   }, []);
 
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains("about-modal-overlay")) {
-      onClose();
+      logAnalyticsEvent("modal_closed_without_click", { modal: "about" });
+      handleClose();
     }
   };
 
   const switchTo = (targetLang) => {
     setLang(targetLang);
+  };
+
+  const handleClose = () => {
+    logAnalyticsEvent("about_language_read", { language: lang });
+    onClose();
   };
 
   return (
@@ -56,7 +62,7 @@ export default function AboutModal({ onClose }) {
             </span>
           </h2>
 
-          <button className="close-button" onClick={onClose}>
+          <button className="close-button" onClick={handleClose}>
             &times;
           </button>
         </div>

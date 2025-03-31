@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { db } from "./firebase";
 import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "./firebase";
+import { analytics } from "./firebase";
+import { logEvent } from "firebase/analytics";
+import logAnalyticsEvent from "./logAnalyticsEvent";
+import "./style.css";
 
 export default function StatsModal({ onClose, questions }) {
   const [questionStats, setQuestionStats] = useState([]);
   const [totalAnswered, setTotalAnswered] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
+
+  useEffect(() => {
+    logAnalyticsEvent("stats_modal_opened");
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "questionStats"), (snapshot) => {
@@ -48,7 +56,11 @@ export default function StatsModal({ onClose, questions }) {
     return q?.question || `Frage #${id}`;
   };
 
-  const jumpToQuestion = (id) => {
+  const jumpToQuestion = (id, type) => {
+    logAnalyticsEvent("stats_question_clicked", {
+      question_id: id,
+      type,
+    });
     const index = questions.findIndex((q) => String(q.id) === String(id));
     if (index !== -1) {
       onClose(index);
@@ -88,7 +100,7 @@ export default function StatsModal({ onClose, questions }) {
               <div
                 key={q.id}
                 className="answer-button text-sm"
-                onClick={() => jumpToQuestion(q.id)}
+                onClick={() => jumpToQuestion(q.id, "correct")}
               >
                 {getQuestionText(q.id)}
               </div>
@@ -103,7 +115,7 @@ export default function StatsModal({ onClose, questions }) {
               <div
                 key={q.id}
                 className="answer-button text-sm"
-                onClick={() => jumpToQuestion(q.id)}
+                onClick={() => jumpToQuestion(q.id, "wrong")}
               >
                 {getQuestionText(q.id)}
               </div>
