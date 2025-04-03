@@ -7,7 +7,10 @@ export default function ConsentGate() {
   useEffect(() => {
     const checkConsent = () => {
       const consent = window.CookieYes?.consent;
+      console.log("🔍 Checking consent:", consent); // ✅ DEBUG LOG
+
       if (consent?.necessary && consent?.analytics) {
+        console.log("✅ CookieYes consent granted!");
         setHasConsent(true);
       }
     };
@@ -17,6 +20,7 @@ export default function ConsentGate() {
 
     // Listen for future consent events
     const handleConsentUpdate = () => {
+      console.log("📢 Consent update event received");
       checkConsent();
     };
 
