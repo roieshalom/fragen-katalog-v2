@@ -5,22 +5,13 @@ export default function ConsentGate() {
   const [hasConsent, setHasConsent] = useState(false);
 
   useEffect(() => {
-    // Show overlay initially
-    setHasConsent(false);
-
-    // Listen for consent event
-    const handleConsentUpdate = () => {
-      console.log("📢 Consent event received — removing blocker");
+    // Wait up to 5 seconds, then allow access
+    const timer = setTimeout(() => {
+      console.log("⏳ No event fired, removing blocker after timeout");
       setHasConsent(true);
-    };
+    }, 5000);
 
-    // Register event
-    window.addEventListener("cookieyes_consent_update", handleConsentUpdate);
-
-    // Clean up
-    return () => {
-      window.removeEventListener("cookieyes_consent_update", handleConsentUpdate);
-    };
+    return () => clearTimeout(timer);
   }, []);
 
   if (hasConsent) return null;
@@ -35,4 +26,3 @@ export default function ConsentGate() {
     </div>
   );
 }
- 
