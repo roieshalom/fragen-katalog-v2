@@ -7,6 +7,8 @@ import { doc, setDoc, updateDoc, increment } from "firebase/firestore";
 import { db } from "./firebase";
 import logAnalyticsEvent from "./logAnalyticsEvent";
 import "./style.css";
+import ConsentGate from "./ConsentGate";
+
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
@@ -113,6 +115,7 @@ export default function App() {
 
   return (
     <div className="app-wrapper">
+      <ConsentGate />
       <header className="app-header">
         <div className="header-inner">
           <div className="header-titles">
