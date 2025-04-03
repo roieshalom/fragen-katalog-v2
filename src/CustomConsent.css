@@ -1,0 +1,39 @@
+.consent-backdrop {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(5px);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+  }
+  
+  .consent-modal {
+    max-width: 400px;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    font-size: 1rem;
+  }
+  
+  .consent-button {
+    margin-top: 1.2rem;
+    background-color: #0b983f; /* green-500 */
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 0.6rem;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .consent-button:hover {
+    background-color: #0b983f; /* green-600 */
+  }
+  

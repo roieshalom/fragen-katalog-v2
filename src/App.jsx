@@ -7,9 +7,11 @@ import { doc, setDoc, updateDoc, increment } from "firebase/firestore";
 import { db } from "./firebase";
 import logAnalyticsEvent from "./logAnalyticsEvent";
 import "./style.css";
+import CustomConsent from "./CustomConsent";
 
 
 export default function App() {
+  const [hasConsent, setHasConsent] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -112,6 +114,9 @@ export default function App() {
     setShowStats(true);
     };
 
+    if (!hasConsent) {
+      return <CustomConsent onConsentGiven={() => setHasConsent(true)} />;
+    }
   return (
     <div className="app-wrapper">
       <header className="app-header">
