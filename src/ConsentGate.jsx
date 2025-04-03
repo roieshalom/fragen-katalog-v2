@@ -5,11 +5,12 @@ export default function ConsentGate() {
   const [hasConsent, setHasConsent] = useState(false);
 
   useEffect(() => {
-    // Wait up to 5 seconds, then allow access
+    console.log("🔒 ConsentGate mounted, waiting 5 seconds…");
+
     const timer = setTimeout(() => {
-      console.log("⏳ No event fired, removing blocker after timeout");
+      console.log("✅ Removing overlay after timeout");
       setHasConsent(true);
-    }, 5000);
+    }, 5000); // Show overlay for 5 seconds max
 
     return () => clearTimeout(timer);
   }, []);
