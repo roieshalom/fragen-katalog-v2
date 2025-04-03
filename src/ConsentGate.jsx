@@ -7,27 +7,39 @@ export default function ConsentGate() {
   useEffect(() => {
     const checkConsent = () => {
       const consent = window.CookieYes?.consent;
-      console.log("🔍 Checking consent:", consent); // ✅ DEBUG LOG
-
+      console.log("🔍 Checking consent:", consent);
       if (consent?.necessary && consent?.analytics) {
         console.log("✅ CookieYes consent granted!");
         setHasConsent(true);
+        return true;
       }
+      return false;
     };
 
-    // Initial check (in case user already accepted before)
-    checkConsent();
+    // Initial check
+    if (checkConsent()) return;
 
-    // Listen for future consent events
+    // Listen for consent update
     const handleConsentUpdate = () => {
       console.log("📢 Consent update event received");
-      checkConsent();
+      // Delay check slightly in case data isn't ready
+      setTimeout(() => checkConsent(), 500);
     };
 
     window.addEventListener("cookieyes_consent_update", handleConsentUpdate);
 
+    // Fallback polling – give it 5s max
+    let tries = 0;
+    const interval = setInterval(() => {
+      if (checkConsent() || tries > 10) {
+        clearInterval(interval);
+      }
+      tries++;
+    }, 500);
+
     return () => {
       window.removeEventListener("cookieyes_consent_update", handleConsentUpdate);
+      clearInterval(interval);
     };
   }, []);
 
