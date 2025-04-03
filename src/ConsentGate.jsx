@@ -5,16 +5,26 @@ export default function ConsentGate() {
   const [hasConsent, setHasConsent] = useState(false);
 
   useEffect(() => {
-    // Wait for CookieYes to load
-    const interval = setInterval(() => {
-      const consent = window.CookieYes && window.CookieYes.consent;
+    const checkConsent = () => {
+      const consent = window.CookieYes?.consent;
       if (consent?.necessary && consent?.analytics) {
         setHasConsent(true);
-        clearInterval(interval);
       }
-    }, 500);
+    };
 
-    return () => clearInterval(interval);
+    // Initial check (in case user already accepted before)
+    checkConsent();
+
+    // Listen for future consent events
+    const handleConsentUpdate = () => {
+      checkConsent();
+    };
+
+    window.addEventListener("cookieyes_consent_update", handleConsentUpdate);
+
+    return () => {
+      window.removeEventListener("cookieyes_consent_update", handleConsentUpdate);
+    };
   }, []);
 
   if (hasConsent) return null;
@@ -22,7 +32,8 @@ export default function ConsentGate() {
   return (
     <div className="consent-overlay">
       <div className="consent-message">
-        Bitte akzeptiere die Cookies, um die Website zu nutzen.<br />
+        Bitte akzeptiere die Cookies, um die Website zu nutzen.
+        <br />
         Please accept cookies to continue.
       </div>
     </div>
