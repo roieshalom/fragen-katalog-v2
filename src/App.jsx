@@ -109,8 +109,7 @@ export default function App() {
   const openStatsModal = () => {
     setShowAbout(false);
     setShowStats(true);
-    logAnalyticsEvent("stats_modal_opened");
-  };
+    };
 
   return (
     <div className="app-wrapper">

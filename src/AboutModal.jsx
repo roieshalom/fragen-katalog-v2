@@ -6,10 +6,6 @@ import "./style.css";
 export default function AboutModal({ onClose }) {
   const [lang, setLang] = useState("de");
 
-  useEffect(() => {
-    logAnalyticsEvent("about_modal_opened");
-  }, []);
-
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains("about-modal-overlay")) {
       logAnalyticsEvent("modal_closed_without_click", { modal: "about" });
