@@ -26,16 +26,15 @@ export default function CustomConsent({ onConsentGiven }) {
       <div className="consent-modal">
         <h2>Willkommen bei Fragen-Katalog!</h2>
         <p>
-          Ich habe dieses Projekt als Lernhilfe für mich (und vielleicht auch für dich?) gebaut –
-          es ist komplett kostenlos, ohne Werbung oder Anmeldung.
+        🇩🇪 Ich habe diese Seite als Lernhilfe gebaut – kostenlos, ohne Werbung oder Anmeldung.
+Damit ich besser verstehen kann, wie die Seite genutzt wird, verwende ich Cookies für anonyme Statistikdaten.
+Bitte akzeptiere die Nutzung von Cookies, um fortzufahren.
+        Bitte akzeptiere die Nutzung von Cookies, um fortzufahren.
         </p>
         <p>
-          Um die Seite weiterzuentwickeln, verwende ich anonyme Statistikdaten. Bitte akzeptiere
-          die Nutzung von Cookies, damit ich besser verstehen kann, was funktioniert.
-        </p>
-        <p style={{ fontStyle: "italic", fontSize: "0.9rem" }}>
-          I built this as a personal learning project – completely free, ad-free, no login. I'd be
-          grateful if you accept cookies to help me understand how it's used.
+       🇬🇧 I built this site as a free learning project — no ads, no login, just for fun.
+To improve it, I use cookies for anonymous analytics.
+Please accept cookies to continue.
         </p>
         <button className="consent-button" onClick={handleAccept}>
           Einverstanden / Accept
