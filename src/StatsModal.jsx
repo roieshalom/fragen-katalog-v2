@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
-import { analytics } from "./firebase";
-import { logEvent } from "firebase/analytics";
+import { collection, onSnapshot } from "firebase/firestore";
 import logAnalyticsEvent from "./logAnalyticsEvent";
 import "./style.css";
 
@@ -13,9 +11,7 @@ export default function StatsModal({ onClose, questions }) {
 
   useEffect(() => {
     logAnalyticsEvent("stats_modal_opened");
-  }, []);
 
-  useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "questionStats"), (snapshot) => {
       const stats = [];
       let total = 0;
@@ -87,7 +83,7 @@ export default function StatsModal({ onClose, questions }) {
               <p className="big-number">{totalAnswered}</p>
             </div>
             <div className="stats-summary-box">
-              <p className="text-sm">Richtig<br />beantwortete</p>
+              <p className="text-sm">Richtig<br />beantwortet</p>
               <p className="big-number">{correctPercentage}%</p>
             </div>
           </div>

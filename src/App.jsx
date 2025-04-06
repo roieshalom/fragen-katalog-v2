@@ -85,6 +85,26 @@ export default function App() {
         console.error("❌ Firestore update failed:", err);
       }
     }
+// ✅ Also update global metrics
+try {
+  const globalRef = doc(db, "metrics", "totals");
+  await updateDoc(globalRef, {
+    total: increment(1),
+    correct: isCorrect ? increment(1) : increment(0),
+    wrong: !isCorrect ? increment(1) : increment(0),
+  });
+} catch (err) {
+  if (err.code === "not-found") {
+    await setDoc(doc(db, "metrics", "totals"), {
+      total: 1,
+      correct: isCorrect ? 1 : 0,
+      wrong: isCorrect ? 0 : 1,
+    });
+  } else {
+    console.error("❌ Failed to update global totals:", err);
+  }
+}
+
   };
 
   const nextQuestion = () => {
