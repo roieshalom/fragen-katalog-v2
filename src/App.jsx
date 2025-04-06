@@ -9,7 +9,6 @@ import logAnalyticsEvent from "./logAnalyticsEvent";
 import "./style.css";
 import CustomConsent from "./CustomConsent";
 
-
 export default function App() {
   const [hasConsent, setHasConsent] = useState(false);
   const [questions, setQuestions] = useState([]);
@@ -27,8 +26,15 @@ export default function App() {
   ]);
 
   useEffect(() => {
-    logAnalyticsEvent("session_start");
-
+    if (!hasConsent) return;
+  
+    const waitForAnalytics = setInterval(() => {
+      if (window.gtag || window.firebase?.analytics) {
+        logAnalyticsEvent("session_start");
+        clearInterval(waitForAnalytics);
+      }
+    }, 100);
+  
     fetch("/data/questions.json")
       .then((res) => res.json())
       .then((data) => {
@@ -49,7 +55,9 @@ export default function App() {
         console.error("❌ Failed to load questions:", err);
         setLoading(false);
       });
-  }, []);
+  
+    return () => clearInterval(waitForAnalytics);
+  }, [hasConsent]);  
 
   const handleSelectAnswer = async (index) => {
     const isCorrect = index === questions[currentQuestion]?.correct;
@@ -85,26 +93,26 @@ export default function App() {
         console.error("❌ Firestore update failed:", err);
       }
     }
-// ✅ Also update global metrics
-try {
-  const globalRef = doc(db, "metrics", "totals");
-  await updateDoc(globalRef, {
-    total: increment(1),
-    correct: isCorrect ? increment(1) : increment(0),
-    wrong: !isCorrect ? increment(1) : increment(0),
-  });
-} catch (err) {
-  if (err.code === "not-found") {
-    await setDoc(doc(db, "metrics", "totals"), {
-      total: 1,
-      correct: isCorrect ? 1 : 0,
-      wrong: isCorrect ? 0 : 1,
-    });
-  } else {
-    console.error("❌ Failed to update global totals:", err);
-  }
-}
 
+    // ✅ Also update global metrics
+    try {
+      const globalRef = doc(db, "metrics", "totals");
+      await updateDoc(globalRef, {
+        total: increment(1),
+        correct: isCorrect ? increment(1) : increment(0),
+        wrong: !isCorrect ? increment(1) : increment(0),
+      });
+    } catch (err) {
+      if (err.code === "not-found") {
+        await setDoc(doc(db, "metrics", "totals"), {
+          total: 1,
+          correct: isCorrect ? 1 : 0,
+          wrong: isCorrect ? 0 : 1,
+        });
+      } else {
+        console.error("❌ Failed to update global totals:", err);
+      }
+    }
   };
 
   const nextQuestion = () => {
@@ -132,11 +140,13 @@ try {
   const openStatsModal = () => {
     setShowAbout(false);
     setShowStats(true);
-    };
+    logAnalyticsEvent("stats_modal_opened");
+  };
 
-    if (!hasConsent) {
-      return <CustomConsent onConsentGiven={() => setHasConsent(true)} />;
-    }
+  if (!hasConsent) {
+    return <CustomConsent onConsentGiven={() => setHasConsent(true)} />;
+  }
+
   return (
     <div className="app-wrapper">
       <header className="app-header">
@@ -178,15 +188,9 @@ try {
               imageId={questions[currentQuestion]?.imageId}
             />
             <div className="controls">
-              <button className="controls-button" onClick={prevQuestion}>
-                ◀︎ Zurück
-              </button>
-              <button className="controls-button" onClick={randomQuestion}>
-                Zufällig
-              </button>
-              <button className="controls-button" onClick={nextQuestion}>
-                Weiter ▶︎
-              </button>
+              <button className="controls-button" onClick={prevQuestion}>◀︎ Zurück</button>
+              <button className="controls-button" onClick={randomQuestion}>Zufällig</button>
+              <button className="controls-button" onClick={nextQuestion}>Weiter ▶︎</button>
             </div>
             <div className="info-footer">
               <p className="total-questions">Insgesamt: {questions.length} Fragen</p>
