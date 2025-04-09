@@ -16,26 +16,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-let analytics = null;
+// ✅ Export this function to safely access analytics
+const getAnalyticsInstance = () =>
+  isSupported().then((supported) => {
+    if (supported) {
+      const analytics = getAnalytics(app);
 
-isSupported().then((supported) => {
-  if (supported) {
-    analytics = getAnalytics(app);
+      // ✅ Enable debug mode for GA4
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        window.dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", firebaseConfig.measurementId, { debug_mode: true });
 
-    // ✅ Initialize dataLayer for debug mode
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
+      console.log("📈 Firebase Analytics initialized with debug_mode");
+      return analytics;
+    } else {
+      console.warn("⚠️ Firebase Analytics not supported on this device.");
+      return null;
     }
+  });
 
-    // ✅ Enable debug mode before sending any events
-    gtag("js", new Date());
-    gtag("config", firebaseConfig.measurementId, { debug_mode: true });
-
-    console.log("📈 Firebase Analytics initialized with debug_mode");
-  } else {
-    console.warn("⚠️ Firebase Analytics not supported on this device.");
-  }
-});
-
-export { db, analytics };
+export { db, getAnalyticsInstance };
