@@ -1,5 +1,15 @@
 // src/logAnalyticsEvent.js
-import { analytics } from "./firebase";
+import { getAnalyticsInstance } from "./firebase";
+import { logEvent } from "firebase/analytics";
+
+// Usage: wrap logging like this
+export const logCustomEvent = (eventName, params = {}) => {
+  getAnalyticsInstance().then((analytics) => {
+    if (analytics) {
+      logEvent(analytics, eventName, params);
+    }
+  });
+};
 import { logEvent } from "firebase/analytics";
 
 export default function logAnalyticsEvent(eventName, eventParams = {}) {
