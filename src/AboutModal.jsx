@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { getAnalyticsInstance } from "./firebase";
 import logAnalyticsEvent from "./logAnalyticsEvent";
 import "./style.css";
 
@@ -20,17 +19,6 @@ export default function AboutModal({ onClose }) {
   const handleClose = () => {
     logAnalyticsEvent("about_language_read", { language: lang });
     onClose();
-  };
-
-  const handleBuyMeCoffeeClick = () => {
-    getAnalyticsInstance().then((analytics) => {
-      if (analytics) {
-        logAnalyticsEvent("buy_me_a_coffee_clicked");
-        console.log("📊 Logged: buy_me_a_coffee_clicked");
-      }
-    });
-
-    window.open("https://www.buymeacoffee.com/roiesh", "_blank");
   };
 
   return (
@@ -128,8 +116,10 @@ export default function AboutModal({ onClose }) {
             fragen@fragen-katalog.com
           </a>
 
-          <button
-            onClick={handleBuyMeCoffeeClick}
+          <a
+            href="https://www.buymeacoffee.com/roiesh"
+            target="_blank"
+            rel="noopener noreferrer"
             className="controls-button"
             style={{
               width: "100%",
@@ -138,7 +128,7 @@ export default function AboutModal({ onClose }) {
             }}
           >
             Buy me a coffee
-          </button>
+          </a>
         </div>
       </div>
     </div>
