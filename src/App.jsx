@@ -37,14 +37,15 @@ export default function App() {
       }
     }, 100);
   
-    useEffect(() => {
-      getAnalyticsInstance().then((analytics) => {
-        if (analytics) {
-          logEvent(analytics, "test_event", { source: "manual_trigger" });
-          console.log("📊 Logged test_event");
-        }
-      });
-    }, []);
+// useEffect(() => {
+//   getAnalyticsInstance().then((analytics) => {
+//     if (analytics) {
+//       logEvent(analytics, "test_event", { source: "manual_trigger" });
+//       console.log("📊 Logged test_event");
+//     }
+//   });
+// }, []);
+
     
     fetch("/data/questions.json")
       .then((res) => res.json())
