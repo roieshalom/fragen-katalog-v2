@@ -1,45 +1,62 @@
-import { useState, useEffect } from "react";
-import "./CustomConsent.css";
+// src/CustomConsent.jsx
+import React, { useEffect, useState } from "react";
 
-export default function CustomConsent({ onConsentGiven }) {
-  const [showOverlay, setShowOverlay] = useState(false);
+export default function CustomConsent() {
+  const [hasConsent, setHasConsent] = useState(() => {
+    return localStorage.getItem("user_consent") === "true";
+  });
 
   useEffect(() => {
-    const hasAccepted = localStorage.getItem("consentGiven");
-    if (!hasAccepted) {
-      setShowOverlay(true);
-    } else {
-      onConsentGiven();
+    if (!hasConsent) {
+      // Apply default anonymous mode
+      window.gtag?.("consent", "default", {
+        ad_storage: "denied",
+        analytics_storage: "granted",
+      });
     }
-  }, [onConsentGiven]);
+  }, [hasConsent]);
 
   const handleAccept = () => {
-    localStorage.setItem("consentGiven", "true");
-    setShowOverlay(false);
-    onConsentGiven();
+    localStorage.setItem("user_consent", "true");
+    setHasConsent(true);
+    window.gtag?.("consent", "update", {
+      ad_storage: "granted",
+      analytics_storage: "granted",
+    });
+    console.log("✅ User accepted cookies");
   };
 
-  if (!showOverlay) return null;
+  if (hasConsent) return null;
 
   return (
-    <div className="consent-backdrop">
-      <div className="consent-modal">
-        <h2>Willkommen bei Fragen-Katalog!</h2>
-        <p>
-        🇩🇪 Ich habe diese Seite als Lernhilfe gebaut – kostenlos, ohne Werbung oder Anmeldung.
-Damit ich besser verstehen kann, wie die Seite genutzt wird, verwende ich Cookies für anonyme Statistikdaten.
-Bitte akzeptiere die Nutzung von Cookies, um fortzufahren.
-        Bitte akzeptiere die Nutzung von Cookies, um fortzufahren.
-        </p>
-        <p>
-       🇬🇧 I built this site as a free learning project — no ads, no login, just for fun.
-To improve it, I use cookies for anonymous analytics.
-Please accept cookies to continue.
-        </p>
-        <button className="consent-button" onClick={handleAccept}>
-          Einverstanden / Accept
-        </button>
-      </div>
+    <div
+      style={{
+        position: "fixed",
+        bottom: 0,
+        width: "100%",
+        background: "#222",
+        color: "white",
+        padding: "1rem",
+        zIndex: 1000,
+        textAlign: "center",
+      }}
+    >
+      <p className="text-sm mb-2">
+        Diese Website verwendet Google Analytics, um anonyme Nutzungsdaten zu sammeln. Keine persönlichen Daten werden gespeichert oder weitergegeben.
+      </p>
+      <button
+        onClick={handleAccept}
+        style={{
+          backgroundColor: "var(--color-primary)",
+          color: "white",
+          border: "none",
+          padding: "10px 20px",
+          borderRadius: "8px",
+          cursor: "pointer",
+        }}
+      >
+        OK, verstanden
+      </button>
     </div>
   );
 }

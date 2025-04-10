@@ -12,7 +12,6 @@ import "./style.css";
 import CustomConsent from "./CustomConsent";
 
 export default function App() {
-  const [hasConsent, setHasConsent] = useState(false);
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -28,25 +27,14 @@ export default function App() {
   ]);
 
   useEffect(() => {
-    if (!hasConsent) return;
-  
+    // Always allow anonymous analytics by default
     const waitForAnalytics = setInterval(() => {
       if (window.gtag || window.firebase?.analytics) {
         logAnalyticsEvent("session_start");
         clearInterval(waitForAnalytics);
       }
     }, 100);
-  
-// useEffect(() => {
-//   getAnalyticsInstance().then((analytics) => {
-//     if (analytics) {
-//       logEvent(analytics, "test_event", { source: "manual_trigger" });
-//       console.log("📊 Logged test_event");
-//     }
-//   });
-// }, []);
 
-    
     fetch("/data/questions.json")
       .then((res) => res.json())
       .then((data) => {
@@ -67,9 +55,9 @@ export default function App() {
         console.error("❌ Failed to load questions:", err);
         setLoading(false);
       });
-  
+
     return () => clearInterval(waitForAnalytics);
-  }, [hasConsent]);  
+  }, []);
 
   const handleSelectAnswer = async (index) => {
     const isCorrect = index === questions[currentQuestion]?.correct;
@@ -86,16 +74,16 @@ export default function App() {
 
     const questionId = String(questions[currentQuestion]?.id);
     logAnalyticsEvent("question_answered", { question_id: questionId, correct: isCorrect });
+
     // Track answered questions this session
-let count = Number(sessionStorage.getItem("answered_count") || 0) + 1;
-sessionStorage.setItem("answered_count", count);
+    let count = Number(sessionStorage.getItem("answered_count") || 0) + 1;
+    sessionStorage.setItem("answered_count", count);
 
-// Log milestone event at 3 answers
-if (count === 3) {
-  logAnalyticsEvent("answered_3_in_session");
-  console.log("🎯 Logged: answered_3_in_session");
-}
-
+    // Log milestone event at 3 answers
+    if (count === 3) {
+      logAnalyticsEvent("answered_3_in_session");
+      console.log("🎯 Logged: answered_3_in_session");
+    }
 
     try {
       const ref = doc(db, "questionStats", questionId);
@@ -165,10 +153,6 @@ if (count === 3) {
     logAnalyticsEvent("stats_modal_opened");
   };
 
-  if (!hasConsent) {
-    return <CustomConsent onConsentGiven={() => setHasConsent(true)} />;
-  }
-
   return (
     <div className="app-wrapper">
       <header className="app-header">
@@ -233,6 +217,9 @@ if (count === 3) {
           questions={questions}
         />
       )}
+
+      {/* ✅ Soft consent banner */}
+      <CustomConsent />
     </div>
   );
 }
