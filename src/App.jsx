@@ -86,6 +86,16 @@ export default function App() {
 
     const questionId = String(questions[currentQuestion]?.id);
     logAnalyticsEvent("question_answered", { question_id: questionId, correct: isCorrect });
+    // Track answered questions this session
+let count = Number(sessionStorage.getItem("answered_count") || 0) + 1;
+sessionStorage.setItem("answered_count", count);
+
+// Log milestone event at 3 answers
+if (count === 3) {
+  logAnalyticsEvent("answered_3_in_session");
+  console.log("🎯 Logged: answered_3_in_session");
+}
+
 
     try {
       const ref = doc(db, "questionStats", questionId);
