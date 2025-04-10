@@ -1,3 +1,5 @@
+import { logEvent } from "firebase/analytics";
+import { getAnalyticsInstance } from "./firebase";
 import React, { useState, useEffect } from "react";
 import Flashcard from "./Flashcard";
 import AboutModal from "./AboutModal";
@@ -35,6 +37,15 @@ export default function App() {
       }
     }, 100);
   
+    useEffect(() => {
+      getAnalyticsInstance().then((analytics) => {
+        if (analytics) {
+          logEvent(analytics, "test_event", { source: "manual_trigger" });
+          console.log("📊 Logged test_event");
+        }
+      });
+    }, []);
+    
     fetch("/data/questions.json")
       .then((res) => res.json())
       .then((data) => {
