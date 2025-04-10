@@ -116,10 +116,8 @@ export default function AboutModal({ onClose }) {
             fragen@fragen-katalog.com
           </a>
 
-          <a
-  href="#"
-  onClick={(e) => {
-    e.preventDefault();
+          <button
+  onClick={() => {
     logAnalyticsEvent("buy_me_a_coffee_clicked");
     window.open("https://www.buymeacoffee.com/roiesh", "_blank");
   }}
@@ -128,10 +126,19 @@ export default function AboutModal({ onClose }) {
     width: "100%",
     maxWidth: "200px",
     textAlign: "center",
+    color: "white",
+    backgroundColor: "var(--color-primary)",
+    border: "none",
+    padding: "12px 20px",
+    borderRadius: "8px",
+    fontWeight: "500",
+    cursor: "pointer",
+    textDecoration: "none",
   }}
 >
   Buy me a coffee
-</a>
+</button>
+
 
         </div>
       </div>
