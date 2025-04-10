@@ -117,18 +117,22 @@ export default function AboutModal({ onClose }) {
           </a>
 
           <a
-            href="https://www.buymeacoffee.com/roiesh"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="controls-button"
-            style={{
-              width: "100%",
-              maxWidth: "200px",
-              textAlign: "center",
-            }}
-          >
-            Buy me a coffee
-          </a>
+  href="#"
+  onClick={(e) => {
+    e.preventDefault();
+    logAnalyticsEvent("buy_me_a_coffee_clicked");
+    window.open("https://www.buymeacoffee.com/roiesh", "_blank");
+  }}
+  className="controls-button"
+  style={{
+    width: "100%",
+    maxWidth: "200px",
+    textAlign: "center",
+  }}
+>
+  Buy me a coffee
+</a>
+
         </div>
       </div>
     </div>
