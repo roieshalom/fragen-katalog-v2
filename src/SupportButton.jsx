@@ -21,6 +21,7 @@ export default function SupportButton({ variant = "soft", style = {}, className 
     gap: "8px",
     width: "100%",
     maxWidth: "200px",
+    whiteSpace: "nowrap",
     transition: "all 0.2s ease",
     ...style,
   };
