@@ -16,10 +16,9 @@ export default function SupportButton({ variant = "soft", style = {}, className 
     border: "none",
     cursor: "pointer",
     display: "inline-block",
-    width: "200px", // fixed width
-    whiteSpace: "nowrap", // prevent wrapping
-    overflow: "hidden",
-    textOverflow: "ellipsis",
+    padding: "12px 20px",
+    maxWidth: "90vw",
+    whiteSpace: "nowrap",
     textAlign: "center",
     transition: "all 0.2s ease",
     ...style,
