@@ -15,18 +15,18 @@ export default function SupportButton({ variant = "soft", style = {}, className 
     fontSize: "15px",
     border: "none",
     cursor: "pointer",
-    display: "flex", // ✅ was inline-flex before
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "8px",
-    minWidth: "200px", // ✅ force a safe width
-    whiteSpace: "nowrap", // ✅ prevent wrapping
+    display: "inline-block",
+    width: "200px", // fixed width
+    whiteSpace: "nowrap", // prevent wrapping
+    overflow: "hidden",
+    textOverflow: "ellipsis",
     textAlign: "center",
     transition: "all 0.2s ease",
+    ...style,
   };
 
   const softStyle = {
-    backgroundColor: "#f2f7fc", // light brand-tinted card
+    backgroundColor: "#f2f7fc",
     color: "var(--color-primary)",
     boxShadow: "0 2px 6px rgba(0,0,0,0.08)",
   };
@@ -44,8 +44,7 @@ export default function SupportButton({ variant = "soft", style = {}, className 
       className={`support-button ${className}`}
       style={{ ...baseStyle, ...variantStyle }}
     >
-      <span style={{ whiteSpace: "nowrap" }}>❤️ Support this project</span>
-
+      ❤️ Support this project
     </button>
   );
 }
