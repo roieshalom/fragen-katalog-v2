@@ -15,15 +15,14 @@ export default function SupportButton({ variant = "soft", style = {}, className 
     fontSize: "15px",
     border: "none",
     cursor: "pointer",
-    display: "inline-flex",
+    display: "flex", // ✅ was inline-flex before
     alignItems: "center",
     justifyContent: "center",
     gap: "8px",
-    width: "100%",
-    maxWidth: "200px",
-    whiteSpace: "nowrap",
+    minWidth: "200px", // ✅ force a safe width
+    whiteSpace: "nowrap", // ✅ prevent wrapping
+    textAlign: "center",
     transition: "all 0.2s ease",
-    ...style,
   };
 
   const softStyle = {
