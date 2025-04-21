@@ -67,9 +67,9 @@ export default function AboutModal({ onClose }) {
           {lang === "de" ? (
             <>
               <p className="text-base mb-3">
-              <p className="text-base font-semibold mb-2">
-                Diese Seite enthält alle offiziellen Fragen und Antworten für den Einbürgerungstest in Berlin.
-            </p>
+                <p className="text-base font-semibold mb-2">
+                  Diese Seite enthält alle offiziellen Fragen und Antworten für den Einbürgerungstest in Berlin.
+                </p>
                 Ich habe diese Website als Lernhilfe für den Einbürgerungstest „Leben in Deutschland“ erstellt.
                 Die Fragen basieren auf dem offiziellen Fragenkatalog der Bundeszentrale für politische Bildung – inklusive des
                 landesspezifischen Teils für Berlin. Ich übernehme keine Gewähr für Richtigkeit oder Aktualität.
@@ -82,9 +82,9 @@ export default function AboutModal({ onClose }) {
           ) : (
             <>
               <p className="text-base mb-3">
-              <p className="text-base font-semibold mb-2">
+                <p className="text-base font-semibold mb-2">
                   This site includes all official questions and answers for the Berlin naturalization test.
-              </p>        
+                </p>
                 I built this website as a personal study tool for the “Leben in Deutschland” naturalization test.
                 The questions are based on the official public catalog — including the state-specific questions for Berlin.
                 Some states have different regional questions. I can’t guarantee accuracy or updates.
@@ -123,8 +123,7 @@ export default function AboutModal({ onClose }) {
             fragen@fragen-katalog.com
           </a>
 
-          <SupportButton fullWidth variant="modal" />
-
+          <SupportButton fullWidth variant="modal" style={{ whiteSpace: "nowrap" }} />
         </div>
       </div>
     </div>
