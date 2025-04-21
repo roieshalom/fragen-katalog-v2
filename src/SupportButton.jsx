@@ -45,7 +45,8 @@ export default function SupportButton({ variant = "soft", style = {}, className 
       className={`support-button ${className}`}
       style={{ ...baseStyle, ...variantStyle }}
     >
-      ❤️ Support this project
+      <span style={{ whiteSpace: "nowrap" }}>❤️ Support this project</span>
+
     </button>
   );
 }
