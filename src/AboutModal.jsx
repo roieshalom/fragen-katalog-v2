@@ -118,7 +118,7 @@ export default function AboutModal({ onClose }) {
 
           <button
   onClick={() => {
-    logAnalyticsEvent("buy_me_a_coffee_clicked");
+    logAnalyticsEvent("Support_this_project_clicked");
     window.open("https://www.buymeacoffee.com/roiesh", "_blank");
   }}
   className="controls-button"
@@ -136,7 +136,8 @@ export default function AboutModal({ onClose }) {
     textDecoration: "none",
   }}
 >
-  Buy me a coffee
+Support this project ❤️
+
 </button>
 
 

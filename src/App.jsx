@@ -10,6 +10,8 @@ import { db } from "./firebase";
 import logAnalyticsEvent from "./logAnalyticsEvent";
 import "./style.css";
 import CustomConsent from "./CustomConsent";
+import FloatingSupportButton from "./FloatingSupportButton";
+
 
 export default function App() {
   const [questions, setQuestions] = useState([]);
@@ -193,14 +195,19 @@ export default function App() {
               onSelectAnswer={handleSelectAnswer}
               imageId={questions[currentQuestion]?.imageId}
             />
-            <div className="controls">
-              <button className="controls-button" onClick={prevQuestion}>◀︎ Zurück</button>
-              <button className="controls-button" onClick={randomQuestion}>Zufällig</button>
-              <button className="controls-button" onClick={nextQuestion}>Weiter ▶︎</button>
-            </div>
-            <div className="info-footer">
-              <p className="total-questions">Insgesamt: {questions.length} Fragen</p>
-            </div>
+           <div className="controls">
+  <button className="controls-button" onClick={prevQuestion}>◀︎ Zurück</button>
+  <button className="controls-button" onClick={randomQuestion}>Zufällig</button>
+  <button className="controls-button" onClick={nextQuestion}>Weiter ▶︎</button>
+</div>
+
+{/* Spacer to avoid overlap with floating button */}
+<div style={{ height: "10px" }} />
+
+<div className="info-footer">
+  <p className="total-questions">Insgesamt: {questions.length} Fragen</p>
+</div>
+
           </>
         )}
       </main>
@@ -220,6 +227,10 @@ export default function App() {
 
       {/* ✅ Soft consent banner */}
       <CustomConsent />
+
+      {/* ✅ Floating support Button */}
+      <FloatingSupportButton />
     </div>
   );
 }
+
