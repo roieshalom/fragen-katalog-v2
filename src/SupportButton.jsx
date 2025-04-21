@@ -44,7 +44,18 @@ export default function SupportButton({ variant = "soft", style = {}, className 
       className={`support-button ${className}`}
       style={{ ...baseStyle, ...variantStyle }}
     >
-      ❤️ Support this project
+      <span
+        style={{
+          display: "inline-block",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          fontSize: "15px",
+        }}
+      >
+        <span role="img" aria-label="heart">❤️</span> Support this project
+      </span>
     </button>
   );
+  
 }
