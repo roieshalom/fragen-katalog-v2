@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logAnalyticsEvent from "./logAnalyticsEvent";
+import SupportButton from "./SupportButton";
 import "./style.css";
 
 export default function AboutModal({ onClose }) {
@@ -66,6 +67,9 @@ export default function AboutModal({ onClose }) {
           {lang === "de" ? (
             <>
               <p className="text-base mb-3">
+              <p className="text-base font-semibold mb-2">
+                Diese Seite enthält alle offiziellen Fragen und Antworten für den Einbürgerungstest in Berlin.
+            </p>
                 Ich habe diese Website als Lernhilfe für den Einbürgerungstest „Leben in Deutschland“ erstellt.
                 Die Fragen basieren auf dem offiziellen Fragenkatalog der Bundeszentrale für politische Bildung – inklusive des
                 landesspezifischen Teils für Berlin. Ich übernehme keine Gewähr für Richtigkeit oder Aktualität.
@@ -78,6 +82,9 @@ export default function AboutModal({ onClose }) {
           ) : (
             <>
               <p className="text-base mb-3">
+              <p className="text-base font-semibold mb-2">
+                  This site includes all official questions and answers for the Berlin naturalization test.
+              </p>        
                 I built this website as a personal study tool for the “Leben in Deutschland” naturalization test.
                 The questions are based on the official public catalog — including the state-specific questions for Berlin.
                 Some states have different regional questions. I can’t guarantee accuracy or updates.
@@ -116,30 +123,7 @@ export default function AboutModal({ onClose }) {
             fragen@fragen-katalog.com
           </a>
 
-          <button
-  onClick={() => {
-    logAnalyticsEvent("Support_this_project_clicked");
-    window.open("https://www.buymeacoffee.com/roiesh", "_blank");
-  }}
-  className="controls-button"
-  style={{
-    width: "100%",
-    maxWidth: "200px",
-    textAlign: "center",
-    color: "white",
-    backgroundColor: "var(--color-primary)",
-    border: "none",
-    padding: "12px 20px",
-    borderRadius: "8px",
-    fontWeight: "500",
-    cursor: "pointer",
-    textDecoration: "none",
-  }}
->
-Support this project ❤️
-
-</button>
-
+          <SupportButton fullWidth variant="modal" />
 
         </div>
       </div>

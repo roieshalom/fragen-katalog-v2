@@ -245,16 +245,6 @@ button.controls-disabled {
   width: 33%;
 }
 
-/* === Footer === */
-.info-footer {
-  width: 100%;
-  text-align: left; /* 👈 changed from center */
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 10px;
-  padding-left: 12px; /* optional: adds nice spacing from edge */
-}
-
 .question-number {
   margin-bottom: 4px;
 }

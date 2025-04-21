@@ -10,7 +10,7 @@ import { db } from "./firebase";
 import logAnalyticsEvent from "./logAnalyticsEvent";
 import "./style.css";
 import CustomConsent from "./CustomConsent";
-import FloatingSupportButton from "./FloatingSupportButton";
+import SupportButton from "./SupportButton";
 
 
 export default function App() {
@@ -201,12 +201,10 @@ export default function App() {
   <button className="controls-button" onClick={nextQuestion}>Weiter ▶︎</button>
 </div>
 
+
 {/* Spacer to avoid overlap with floating button */}
 <div style={{ height: "10px" }} />
 
-<div className="info-footer">
-  <p className="total-questions">Insgesamt: {questions.length} Fragen</p>
-</div>
 
           </>
         )}
@@ -229,8 +227,21 @@ export default function App() {
       <CustomConsent />
 
       {/* ✅ Floating support Button */}
-      <FloatingSupportButton />
-    </div>
+{!showAbout && !showStats && (
+  <div
+    style={{
+      position: "fixed",
+      bottom: 16,
+      right: 16,
+      zIndex: 1000,
+      width: "100%",
+      maxWidth: "200px",
+    }}
+  >
+    <SupportButton />
+  </div>
+)}
+      </div>
   );
 }
 
