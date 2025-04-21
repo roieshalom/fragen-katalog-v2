@@ -69,12 +69,12 @@ export default function AboutModal({ onClose }) {
               <span className="text-base font-semibold">
                 Diese Seite enthält alle offiziellen Fragen und Antworten für den Einbürgerungstest in Berlin.
               </span>
-              <br /><br />
+              <br />
               Ich habe diese Website als Lernhilfe für den Einbürgerungstest „Leben in Deutschland“ erstellt.
               Die Fragen basieren auf dem offiziellen Fragenkatalog der Bundeszentrale für politische Bildung – inklusive des
               landesspezifischen Teils für Berlin. Ich übernehme keine Gewähr für Richtigkeit oder Aktualität.
               Dies ist ein rein privates Nebenprojekt – keine Anmeldung, keine Werbung, keine Verbindung zu staatlichen Stellen.
-              <br /><br />
+              <br />
               Diese Website verwendet Google Analytics, um anonyme Nutzungsstatistiken zu erfassen.
               Es werden keine persönlichen Daten gespeichert oder weitergegeben.
             </p>
@@ -106,7 +106,7 @@ export default function AboutModal({ onClose }) {
             flexDirection: "column",
             alignItems: "center",
             width: "90%",
-            gap: "70px",
+            gap: "30px",
           }}
         >
           <a
