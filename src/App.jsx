@@ -198,7 +198,16 @@ export default function App() {
            <div className="controls">
   <button className="controls-button" onClick={prevQuestion}>◀︎ Zurück</button>
   <button className="controls-button" onClick={randomQuestion}>Zufällig</button>
-  <button className="controls-button" onClick={nextQuestion}>Weiter ▶︎</button>
+  <button
+  className="controls-button"
+  onClick={() => {
+    logAnalyticsEvent("next_question_clicked");
+    nextQuestion();
+  }}
+>
+  Weiter ▶︎
+</button>
+
 </div>
 
 
