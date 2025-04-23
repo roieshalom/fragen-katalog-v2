@@ -21,6 +21,7 @@ export default function SupportButton({ variant = "soft", style = {}, className 
     whiteSpace: "nowrap",
     textAlign: "center",
     transition: "all 0.2s ease",
+    zindex: 1000,
     ...style,
   };
 
