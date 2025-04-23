@@ -37,7 +37,7 @@ export default function CustomConsent() {
         background: "#222",
         color: "white",
         padding: "1rem",
-        zIndex: 1000,
+        zIndex: 1100,
         textAlign: "center",
       }}
     >
