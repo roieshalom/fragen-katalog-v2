@@ -74,7 +74,7 @@ export default function StatsModal({ onClose, questions }) {
         <button className="close-button" onClick={() => onClose()}>
           &times;
         </button>
-        <h2 className="text-xl font-bold mb-4">Statistiken</h2>
+        <h2 className="text-xl font-bold mb-4">Globale Statistiken</h2>
 
         <div className="modal-content">
           <div className="stats-summary">
