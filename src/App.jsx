@@ -217,7 +217,7 @@ export default function App() {
   Weiter ▶︎
 </button>
 
-</div>
+</div>;
 
 
 {/* Spacer to avoid overlap with floating button */}
