@@ -194,18 +194,17 @@ export default function App() {
               imageId={questions[currentQuestion]?.imageId}
             />
             <div className="controls">
-              <button className="controls-button" onClick={prevQuestion}>◀︎ Zurück</button>
-              <button className="controls-button" onClick={randomQuestion}>Zufällig</button>
-              <button
-                className="controls-button"
-                onClick={() => {
-                  logAnalyticsEvent("next_question_clicked");
-                  nextQuestion();
-                }}
-              >
-                Weiter ▶︎
-              </button>
-            </div>
+  <button
+    className="controls-button"
+    onClick={() => {
+      logAnalyticsEvent("next_question_clicked");
+      randomQuestion();
+    }}
+  >
+    Nächste Frage
+  </button>
+</div>
+
             <div style={{ height: "10px" }} />
           </>
         )}

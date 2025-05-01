@@ -32,31 +32,46 @@ export default function CustomConsent() {
     <div
       style={{
         position: "fixed",
-        bottom: 0,
-        width: "100%",
-        background: "#222",
-        color: "white",
+        inset: 0,
+        backgroundColor: "rgba(255, 255, 255, 0.85)",
+        backdropFilter: "blur(5px)",
+        zIndex: 9999,
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
         padding: "1rem",
-        zIndex: 1200,
-        textAlign: "center",
       }}
     >
-      <p className="text-sm mb-2">
-        Diese Website verwendet Google Analytics, um anonyme Nutzungsdaten zu sammeln. Keine persönlichen Daten werden gespeichert oder weitergegeben.
-      </p>
-      <button
-        onClick={handleAccept}
+      <div
         style={{
-          backgroundColor: "var(--color-primary)",
+          background: "#222",
           color: "white",
-          border: "none",
-          padding: "10px 20px",
-          borderRadius: "8px",
-          cursor: "pointer",
+          borderRadius: "12px",
+          padding: "24px",
+          maxWidth: "360px",
+          textAlign: "center",
+          boxShadow: "0 6px 16px rgba(0,0,0,0.3)",
         }}
       >
-        OK, verstanden
-      </button>
+        <p style={{ marginBottom: "16px", fontSize: "15px", lineHeight: 1.5 }}>
+          Diese Website verwendet Google Analytics, um anonyme Nutzungsdaten zu sammeln.
+          Keine persönlichen Daten werden gespeichert oder weitergegeben.
+        </p>
+        <button
+          onClick={handleAccept}
+          style={{
+            padding: "10px 16px",
+            fontWeight: "500",
+            backgroundColor: "white",
+            color: "#222",
+            borderRadius: "8px",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
+          OK, verstanden
+        </button>
+      </div>
     </div>
   );
 }
