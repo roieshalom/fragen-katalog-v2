@@ -46,7 +46,7 @@ export default function CustomConsent() {
           color: "#222",
           borderRadius: "12px",
           padding: "24px",
-          maxWidth: "360px",
+          maxWidth: "300px",
           textAlign: "center",
           boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
         }}
