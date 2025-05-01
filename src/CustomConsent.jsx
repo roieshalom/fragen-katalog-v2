@@ -8,7 +8,6 @@ export default function CustomConsent() {
 
   useEffect(() => {
     if (!hasConsent) {
-      // Apply default anonymous mode
       window.gtag?.("consent", "default", {
         ad_storage: "denied",
         analytics_storage: "granted",
@@ -33,8 +32,7 @@ export default function CustomConsent() {
       style={{
         position: "fixed",
         inset: 0,
-        backgroundColor: "rgba(255, 255, 255, 0.85)",
-        backdropFilter: "blur(5px)",
+        backgroundColor: "rgba(255, 255, 255, 0.5)", // ✅ see-through background
         zIndex: 9999,
         display: "flex",
         justifyContent: "center",
@@ -44,13 +42,13 @@ export default function CustomConsent() {
     >
       <div
         style={{
-          background: "#222",
-          color: "white",
+          background: "white", // ✅ white card
+          color: "#222",
           borderRadius: "12px",
           padding: "24px",
           maxWidth: "360px",
           textAlign: "center",
-          boxShadow: "0 6px 16px rgba(0,0,0,0.3)",
+          boxShadow: "0 6px 16px rgba(0,0,0,0.1)",
         }}
       >
         <p style={{ marginBottom: "16px", fontSize: "15px", lineHeight: 1.5 }}>
@@ -60,10 +58,11 @@ export default function CustomConsent() {
         <button
           onClick={handleAccept}
           style={{
+            fontSize: "15px",
             padding: "10px 16px",
             fontWeight: "500",
-            backgroundColor: "white",
-            color: "#222",
+            backgroundColor: "var(--color-primary)", // ✅ match your blue
+            color: "white",
             borderRadius: "8px",
             border: "none",
             cursor: "pointer",
