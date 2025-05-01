@@ -12,7 +12,6 @@ import "./style.css";
 import CustomConsent from "./CustomConsent";
 import SupportButton from "./SupportButton";
 
-
 export default function App() {
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -29,7 +28,6 @@ export default function App() {
   ]);
 
   useEffect(() => {
-    // Always allow anonymous analytics by default
     const waitForAnalytics = setInterval(() => {
       if (window.gtag || window.firebase?.analytics) {
         logAnalyticsEvent("session_start");
@@ -38,8 +36,6 @@ export default function App() {
     }, 100);
 
     fetch("/data/questions.json")
-      .then((res) => res.json())
-      fetch("/data/questions.json")
       .then((res) => res.json())
       .then((data) => {
         const formatted = data.map((item) => {
@@ -52,15 +48,11 @@ export default function App() {
             imageId: imageQuestionNumbers.has(qNum) ? qNum : null,
           };
         });
-      
+
         setQuestions(formatted);
-      
-        // ✅ Pick a random starting question
         const randomIndex = Math.floor(Math.random() * formatted.length);
         setCurrentQuestion(randomIndex);
-      
         setLoading(false);
-      });
       })
       .catch((err) => {
         console.error("❌ Failed to load questions:", err);
@@ -68,7 +60,7 @@ export default function App() {
       });
 
     return () => clearInterval(waitForAnalytics);
-  } [];
+  }, []);
 
   const handleSelectAnswer = async (index) => {
     const isCorrect = index === questions[currentQuestion]?.correct;
@@ -86,11 +78,9 @@ export default function App() {
     const questionId = String(questions[currentQuestion]?.id);
     logAnalyticsEvent("question_answered", { question_id: questionId, correct: isCorrect });
 
-    // Track answered questions this session
     let count = Number(sessionStorage.getItem("answered_count") || 0) + 1;
     sessionStorage.setItem("answered_count", count);
 
-    // Log milestone event at 3 answers
     if (count === 3) {
       logAnalyticsEvent("answered_3_in_session");
       console.log("🎯 Logged: answered_3_in_session");
@@ -115,7 +105,6 @@ export default function App() {
       }
     }
 
-    // ✅ Also update global metrics
     try {
       const globalRef = doc(db, "metrics", "totals");
       await updateDoc(globalRef, {
@@ -204,26 +193,20 @@ export default function App() {
               onSelectAnswer={handleSelectAnswer}
               imageId={questions[currentQuestion]?.imageId}
             />
-           <div className="controls">
-  <button className="controls-button" onClick={prevQuestion}>◀︎ Zurück</button>
-  <button className="controls-button" onClick={randomQuestion}>Zufällig</button>
-  <button
-  className="controls-button"
-  onClick={() => {
-    logAnalyticsEvent("next_question_clicked");
-    nextQuestion();
-  }}
->
-  Weiter ▶︎
-</button>
-
-</div>;
-
-
-{/* Spacer to avoid overlap with floating button */}
-<div style={{ height: "10px" }} />
-
-
+            <div className="controls">
+              <button className="controls-button" onClick={prevQuestion}>◀︎ Zurück</button>
+              <button className="controls-button" onClick={randomQuestion}>Zufällig</button>
+              <button
+                className="controls-button"
+                onClick={() => {
+                  logAnalyticsEvent("next_question_clicked");
+                  nextQuestion();
+                }}
+              >
+                Weiter ▶︎
+              </button>
+            </div>
+            <div style={{ height: "10px" }} />
           </>
         )}
       </main>
@@ -241,25 +224,22 @@ export default function App() {
         />
       )}
 
-      {/* ✅ Soft consent banner */}
       <CustomConsent />
 
-      {/* ✅ Floating support Button */}
-{!showAbout && !showStats && (
-  <div
-    style={{
-      position: "fixed",
-      bottom: 16,
-      right: 16,
-      zIndex: 1000,
-      width: "100%",
-      maxWidth: "200px",
-    }}
-  >
-    <SupportButton />
-  </div>
-)}
-      </div>
+      {!showAbout && !showStats && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: 16,
+            right: 16,
+            zIndex: 1000,
+            width: "100%",
+            maxWidth: "200px",
+          }}
+        >
+          <SupportButton />
+        </div>
+      )}
+    </div>
   );
-
-
+}
