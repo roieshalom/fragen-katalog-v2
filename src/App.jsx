@@ -39,6 +39,8 @@ export default function App() {
 
     fetch("/data/questions.json")
       .then((res) => res.json())
+      fetch("/data/questions.json")
+      .then((res) => res.json())
       .then((data) => {
         const formatted = data.map((item) => {
           const qNum = item.question_number;
@@ -50,8 +52,15 @@ export default function App() {
             imageId: imageQuestionNumbers.has(qNum) ? qNum : null,
           };
         });
+      
         setQuestions(formatted);
+      
+        // ✅ Pick a random starting question
+        const randomIndex = Math.floor(Math.random() * formatted.length);
+        setCurrentQuestion(randomIndex);
+      
         setLoading(false);
+      });
       })
       .catch((err) => {
         console.error("❌ Failed to load questions:", err);
@@ -59,7 +68,7 @@ export default function App() {
       });
 
     return () => clearInterval(waitForAnalytics);
-  }, []);
+  } [];
 
   const handleSelectAnswer = async (index) => {
     const isCorrect = index === questions[currentQuestion]?.correct;
@@ -252,5 +261,5 @@ export default function App() {
 )}
       </div>
   );
-}
+
 
