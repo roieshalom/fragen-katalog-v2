@@ -159,7 +159,6 @@ export default function App() {
         <div className="header-inner">
           <div className="header-titles">
             <h1 className="app-title">Fragen-Katalog</h1>
-            <p className="subtitle">Under Construction</p>
           </div>
           <div className="header-links">
             {SHOW_STATS && (
