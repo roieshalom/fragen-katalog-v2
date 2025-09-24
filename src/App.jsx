@@ -159,7 +159,7 @@ export default function App() {
       <header className="app-header">
         <div className="header-inner">
           <div className="header-titles">
-            <h1 className="app-title">Fragen-Katalog222</h1>
+            <h1 className="app-title">Test-FIX-42</h1>
           </div>
           <div className="header-links">
             {SHOW_STATS && (
