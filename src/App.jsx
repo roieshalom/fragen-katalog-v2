@@ -153,6 +153,7 @@ export default function App() {
     logAnalyticsEvent("stats_modal_opened");
   };
 
+  
   return (
     <div className="app-wrapper">
       <header className="app-header">
