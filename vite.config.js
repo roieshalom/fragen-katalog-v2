@@ -2,9 +2,9 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  base: "/", // ✅ Good for custom domains like fragen-katalog.com
+  base: "/", // This is fine for GitHub Pages if project is at root of the user/organization site
   plugins: [react()],
   build: {
-    outDir: 'dist' // ✅ Default is 'dist'; this builds to root for manual copy
+    outDir: 'docs' // <-- Change this from 'dist' to 'docs' for GitHub Pages compatibility
   },
 });
