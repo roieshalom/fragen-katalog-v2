@@ -12,7 +12,10 @@ import "./style.css";
 import CustomConsent from "./CustomConsent";
 import SupportButton from "./SupportButton";
 
+// ZZZ_FINAL_TEST_123 - If you see this string in your dist/assets/index-*.js file, you know build is working!
+
 export default function App() {
+  // ZZZ_FINAL_TEST_123 - State declaration test
   const [questions, setQuestions] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(null);
@@ -153,13 +156,13 @@ export default function App() {
     logAnalyticsEvent("stats_modal_opened");
   };
 
-  
+  // ZZZ_FINAL_TEST_123 - In render tree
   return (
     <div className="app-wrapper">
       <header className="app-header">
         <div className="header-inner">
           <div className="header-titles">
-            <h1 className="app-title">Fragen-Katalog222</h1>
+            <h1 className="app-title">ZZZ_FINAL_TEST_123</h1>
           </div>
           <div className="header-links">
             {SHOW_STATS && (
@@ -194,16 +197,16 @@ export default function App() {
               imageId={questions[currentQuestion]?.imageId}
             />
             <div className="controls">
-  <button
-    className="controls-button"
-    onClick={() => {
-      logAnalyticsEvent("next_question_clicked");
-      randomQuestion();
-    }}
-  >
-    Nächste Frage
-  </button>
-</div>
+              <button
+                className="controls-button"
+                onClick={() => {
+                  logAnalyticsEvent("next_question_clicked");
+                  randomQuestion();
+                }}
+              >
+                Nächste Frage
+              </button>
+            </div>
 
             <div style={{ height: "10px" }} />
           </>
@@ -242,4 +245,3 @@ export default function App() {
     </div>
   );
 }
-
