@@ -38,7 +38,7 @@ export default function App() {
       }
     }, 100);
 
-    fetch(`${import.meta.env.BASE_URL}data/questions.json`)
+    fetch(`${import.meta.env.BASE_URL}src/data/questions.json`)
       .then((res) => res.json())
       .then((data) => {
         const formatted = data.map((item) => {
