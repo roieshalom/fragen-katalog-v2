@@ -38,7 +38,7 @@ export default function App() {
       }
     }, 100);
 
-    fetch("public/questions.json")
+    fetch("public/data/questions.json")
       .then((res) => res.json())
       .then((data) => {
         const formatted = data.map((item) => {
